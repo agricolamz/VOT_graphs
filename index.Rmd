@@ -1,0 +1,1210 @@
+---
+title: 'Daghestanian stops: VOT, CD'
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+    toc_position: right
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(message=FALSE,
+                      warning= FALSE,
+                      fig.width=10.4,
+                      fig.height=7)
+```
+
+# Get data
+
+```{r}
+library(tidyverse)
+df <- read_tsv("speakers.csv")
+
+results <- read_tsv("results.tsv")
+correspondence <- read_tsv("correspondence.tsv")
+
+results %>% 
+  left_join(correspondence) %>% 
+  left_join(df) %>% 
+  mutate(repetition = ifelse(repetition == "--undefined--", "", repetition),
+         repetition = paste(context, repetition),
+         folVowDur = as.double(ifelse(folVowDur == "--undefined--",NA, folVowDur)),
+         geminate = ifelse(grepl("[ː:]", stop),"+g", "-g"),
+         aff_type = ifelse(grepl("[sz]", stop),"dent", NA),
+         aff_type = ifelse(grepl("[ʃʒšžǯ]", stop),"alv", aff_type),
+         aff_type = ifelse(grepl("ɬ", stop),"lat", aff_type),
+         aff_type = ifelse(grepl("χ", stop),"uv", aff_type),
+         affric = ifelse(grepl("ɬ", stop),"affricate", affric),
+         affric = ifelse(grepl("χ", stop),"affricate", affric),
+         aff_type = ifelse(grepl("χ", stop),"uv", aff_type),
+         aff_type = factor(aff_type, levels = c("dent", "alv", "lat", "uv")),
+         affric = factor(affric, levels = c("plain", "affricate")),
+         voice = ifelse(voice == "voiced", "+v", "-v")) %>% 
+  mutate(fric = fric * 1000,
+         postfric = postfric*1000,
+         folVowDur = folVowDur*1000,
+         closdur = closdur*1000,
+         VOT = fric + postfric,
+         cd_n = closdur/folVowDur,
+         vot_n = VOT/folVowDur,
+         utterance = paste0(context, "_", repetition),
+         poa = factor(poa, levels = c("bilabial", "dental", "velar", "uvular")),
+         c_type = ifelse(glott == "glottalic", "ej", voice),
+         c_type = ifelse(geminate == "+g", paste0(c_type, ",", "+g"), c_type),
+         c_type = factor(c_type, levels = c("+v", "-v", "ej", "-v,+g", "ej,+g"))) ->
+  final_df
+```
+
+# Absolute values
+## Absolute values of CD (medial)
+
+During the presentation I've filtered out the 0 values, but here I leave them. All of them should be investigated.
+
+```{r}
+speaker <- "m_19"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, closdur, color = poa))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "CD (ms)", x = "", caption = paste("medial position, based on",
+                       speaker,
+                       "Andi speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_14"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, closdur, color = poa))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "CD (ms)", x = "", caption = paste("medial position, based on",
+                       speaker,
+                       "Andi speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_11"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, closdur, color = poa))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "CD (ms)", x = "", caption = paste("medial position, based on",
+                       speaker,
+                       "Andi speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "f_22"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, closdur, color = poa))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "CD (ms)", x = "", caption = paste("medial position, based on",
+                       speaker,
+                       "Andi speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "f_24"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, closdur, color = poa))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "CD (ms)", x = "", caption = paste("medial position, based on",
+                       speaker,
+                       "Andi speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "f_16"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, closdur, color = poa))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "CD (ms)", x = "", caption = paste("medial position, based on",
+                       speaker,
+                       "Andi speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "f_8"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, closdur, color = poa))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "CD (ms)", x = "", caption = paste("medial position, based on",
+                       speaker,
+                       "Andi speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_75"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, closdur, color = poa))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "CD (ms)", x = "", caption = paste("medial position, based on",
+                       speaker,
+                       "Rutul speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_84"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, closdur, color = poa))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "CD (ms)", x = "", caption = paste("medial position, based on",
+                       speaker,
+                       "Rutul speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_81"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, closdur, color = poa))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "CD (ms)", x = "", caption = paste("medial position, based on",
+                       speaker,
+                       "Rutul speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_91"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, closdur, color = poa))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "CD (ms)", x = "", caption = paste("medial position, based on",
+                       speaker,
+                       "Rutul speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_92"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, closdur, color = poa))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "CD (ms)", x = "", caption = paste("medial position, based on",
+                       speaker,
+                       "Rutul speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_94"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, closdur, color = poa))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "CD (ms)", x = "", caption = paste("medial position, based on",
+                       speaker,
+                       "Rutul speaker"))+
+  facet_grid(repetition~affric+poa)
+
+```
+
+## Absolute values of VOT (medial)
+During the presentation I've filtered out the 0 values, but here I leave them. All of them should be investigated. I added a new lines with 30 and 160 ms from (L&C 2001)
+
+```{r}
+speaker <- "m_19"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, VOT, color = poa))+
+  geom_hline(yintercept = 30, lty = 2)+
+  geom_hline(yintercept = 160, lty = 2)+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (ms)", x = "", caption = paste("medial position, based on",
+                                              speaker,
+                                              "Andi speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_14"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, VOT, color = poa))+
+  geom_hline(yintercept = 30, lty = 2)+
+  geom_hline(yintercept = 160, lty = 2)+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (ms)", x = "", caption = paste("medial position, based on",
+                                              speaker,
+                                              "Andi speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_11"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, VOT, color = poa))+
+  geom_hline(yintercept = 30, lty = 2)+
+  geom_hline(yintercept = 160, lty = 2)+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (ms)", x = "", caption = paste("medial position, based on",
+                                              speaker,
+                                              "Andi speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "f_22"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, VOT, color = poa))+
+  geom_hline(yintercept = 30, lty = 2)+
+  geom_hline(yintercept = 160, lty = 2)+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (ms)", x = "", caption = paste("medial position, based on",
+                                              speaker,
+                                              "Andi speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "f_24"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, VOT, color = poa))+
+  geom_hline(yintercept = 30, lty = 2)+
+  geom_hline(yintercept = 160, lty = 2)+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (ms)", x = "", caption = paste("medial position, based on",
+                                              speaker,
+                                              "Andi speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "f_16"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, VOT, color = poa))+
+  geom_hline(yintercept = 30, lty = 2)+
+  geom_hline(yintercept = 160, lty = 2)+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (ms)", x = "", caption = paste("medial position, based on",
+                                              speaker,
+                                              "Andi speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "f_8"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, VOT, color = poa))+
+  geom_hline(yintercept = 30, lty = 2)+
+  geom_hline(yintercept = 160, lty = 2)+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (ms)", x = "", caption = paste("medial position, based on",
+                                              speaker,
+                                              "Andi speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_75"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, VOT, color = poa))+
+  geom_hline(yintercept = 30, lty = 2)+
+  geom_hline(yintercept = 160, lty = 2)+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (ms)", x = "", caption = paste("medial position, based on",
+                                              speaker,
+                                              "Rutul speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_84"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, VOT, color = poa))+
+  geom_hline(yintercept = 30, lty = 2)+
+  geom_hline(yintercept = 160, lty = 2)+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (ms)", x = "", caption = paste("medial position, based on",
+                                              speaker,
+                                              "Rutul speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_81"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, VOT, color = poa))+
+  geom_hline(yintercept = 30, lty = 2)+
+  geom_hline(yintercept = 160, lty = 2)+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (ms)", x = "", caption = paste("medial position, based on",
+                                              speaker,
+                                              "Rutul speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_91"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, VOT, color = poa))+
+  geom_hline(yintercept = 30, lty = 2)+   
+  geom_hline(yintercept = 160, lty = 2)+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (ms)", x = "", caption = paste("medial position, based on",
+                                              speaker,
+                                              "Rutul speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_92"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, VOT, color = poa))+
+  geom_hline(yintercept = 30, lty = 2)+
+  geom_hline(yintercept = 160, lty = 2)+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (ms)", x = "", caption = paste("medial position, based on",
+                                              speaker,
+                                              "Rutul speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_94"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, VOT, color = poa))+
+  geom_hline(yintercept = 30, lty = 2)+
+  geom_hline(yintercept = 160, lty = 2)+ 
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (ms)", x = "", caption = paste("medial position, based on",
+                                              speaker,
+                                              "Rutul speaker"))+
+  facet_grid(repetition~affric+poa)
+
+```
+
+## Absolute values of CD ~ VOT (medial)
+
+During the presentation I've filtered out the 0 values, but here I leave them. All of them should be investigated.
+
+```{r}
+speaker <- "m_19"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(closdur, VOT, color = c_type))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (ms)", x = "CD (ms)", caption = paste("medial position, based on",
+                                              speaker,
+                                              "Andi speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_14"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(closdur, VOT, color = c_type))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (ms)", x = "CD (ms)", caption = paste("medial position, based on",
+                                              speaker,
+                                              "Andi speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_11"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(closdur, VOT, color = c_type))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (ms)", x = "CD (ms)", caption = paste("medial position, based on",
+                                              speaker,
+                                              "Andi speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "f_22"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(closdur, VOT, color = c_type))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (ms)", x = "CD (ms)", caption = paste("medial position, based on",
+                                              speaker,
+                                              "Andi speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "f_24"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(closdur, VOT, color = c_type))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (ms)", x = "CD (ms)", caption = paste("medial position, based on",
+                                              speaker,
+                                              "Andi speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "f_16"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(closdur, VOT, color = c_type))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (ms)", x = "CD (ms)", caption = paste("medial position, based on",
+                                              speaker,
+                                              "Andi speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "f_8"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(closdur, VOT, color = c_type))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (ms)", x = "CD (ms)", caption = paste("medial position, based on",
+                                              speaker,
+                                              "Andi speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_75"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(closdur, VOT, color = c_type))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (ms)", x = "CD (ms)", caption = paste("medial position, based on",
+                                              speaker,
+                                              "Rutul speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_84"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(closdur, VOT, color = c_type))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (ms)", x = "CD (ms)", caption = paste("medial position, based on",
+                                              speaker,
+                                              "Rutul speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_81"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(closdur, VOT, color = c_type))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (ms)", x = "CD (ms)", caption = paste("medial position, based on",
+                                              speaker,
+                                              "Rutul speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_91"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(closdur, VOT, color = c_type))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (ms)", x = "CD (ms)", caption = paste("medial position, based on",
+                                              speaker,
+                                              "Rutul speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_92"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(closdur, VOT, color = c_type))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (ms)", x = "CD (ms)", caption = paste("medial position, based on",
+                                              speaker,
+                                              "Rutul speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_94"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(closdur, VOT, color = c_type))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (ms)", x = "CD (ms)", caption = paste("medial position, based on",
+                                              speaker,
+                              "Rutul speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+# Relative values
+## Relative values of CD (medial)
+
+During the presentation I've filtered out the 0 values, but here I leave them. All of them should be investigated.
+
+
+```{r}
+speaker <- "m_19"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, vot_n, color = poa))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (normalized)", x = "", caption = paste("medial position, based on",
+                                                      speaker,
+                                                      "Andi speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_14"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, vot_n, color = poa))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (normalized)", x = "", caption = paste("medial position, based on",
+                                                      speaker,
+                                                      "Andi speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_11"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, vot_n, color = poa))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (normalized)", x = "", caption = paste("medial position, based on",
+                                                      speaker,
+                                                      "Andi speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "f_22"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, vot_n, color = poa))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (normalized)", x = "", caption = paste("medial position, based on",
+                                                      speaker,
+                                                      "Andi speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "f_24"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, vot_n, color = poa))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (normalized)", x = "", caption = paste("medial position, based on",
+                                                      speaker,
+                                                      "Andi speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "f_16"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, vot_n, color = poa))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (normalized)", x = "", caption = paste("medial position, based on",
+                                                      speaker,
+                                                      "Andi speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "f_8"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, vot_n, color = poa))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (normalized)", x = "", caption = paste("medial position, based on",
+                                                      speaker,
+                                                      "Andi speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_75"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, vot_n, color = poa))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (normalized)", x = "", caption = paste("medial position, based on",
+                                                      speaker,
+                                                      "Rutul speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_84"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, vot_n, color = poa))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (normalized)", x = "", caption = paste("medial position, based on",
+                                                      speaker,
+                                                      "Rutul speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_81"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, vot_n, color = poa))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (normalized)", x = "", caption = paste("medial position, based on",
+                                                      speaker,
+                                                      "Rutul speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_91"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, vot_n, color = poa))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (normalized)", x = "", caption = paste("medial position, based on",
+                                                      speaker,
+                                                      "Rutul speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_92"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, vot_n, color = poa))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (normalized)", x = "", caption = paste("medial position, based on",
+                                                      speaker,
+                                                      "Rutul speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_94"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, vot_n, color = poa))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (normalized)", x = "", caption = paste("medial position, based on",
+                                                      speaker,
+                                                      "Rutul speaker"))+
+  facet_grid(repetition~affric+poa)
+
+```
+
+
+
+## Relative values of VOT (medial)
+During the presentation I've filtered out the 0 values, but here I leave them. All of them should be investigated. I added a new lines with 30 and 160 ms from (L&C 2001)
+
+
+```{r}
+speaker <- "m_19"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, vot_n, color = poa))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (normalized)", x = "", caption = paste("medial position, based on",
+                                                      speaker,
+                                                      "Andi speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_14"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, vot_n, color = poa))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (normalized)", x = "", caption = paste("medial position, based on",
+                                                      speaker,
+                                                      "Andi speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_11"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, vot_n, color = poa))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (normalized)", x = "", caption = paste("medial position, based on",
+                                                      speaker,
+                                                      "Andi speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "f_22"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, vot_n, color = poa))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (normalized)", x = "", caption = paste("medial position, based on",
+                                                      speaker,
+                                                      "Andi speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "f_24"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, vot_n, color = poa))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (normalized)", x = "", caption = paste("medial position, based on",
+                                                      speaker,
+                                                      "Andi speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "f_16"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, vot_n, color = poa))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (normalized)", x = "", caption = paste("medial position, based on",
+                                                      speaker,
+                                                      "Andi speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "f_8"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, vot_n, color = poa))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (normalized)", x = "", caption = paste("medial position, based on",
+                                                      speaker,
+                                                      "Andi speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_75"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, vot_n, color = poa))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (normalized)", x = "", caption = paste("medial position, based on",
+                                                      speaker,
+                                                      "Rutul speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_84"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, vot_n, color = poa))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (normalized)", x = "", caption = paste("medial position, based on",
+                                                      speaker,
+                                                      "Rutul speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_81"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, vot_n, color = poa))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (normalized)", x = "", caption = paste("medial position, based on",
+                                                      speaker,
+                                                      "Rutul speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_91"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, vot_n, color = poa))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (normalized)", x = "", caption = paste("medial position, based on",
+                                                      speaker,
+                                                      "Rutul speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_92"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, vot_n, color = poa))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (normalized)", x = "", caption = paste("medial position, based on",
+                                                      speaker,
+                                                      "Rutul speaker"))+
+  facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_94"
+final_df %>% 
+  filter(id == speaker, position == "medial") %>%
+  ggplot(aes(c_type, vot_n, color = poa))+
+  geom_point()+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (normalized)", x = "", caption = paste("medial position, based on",
+                                                      speaker,
+                                                      "Rutul speaker"))+
+  facet_grid(repetition~affric+poa)
+
+```
+
+
+
+
+## Relative values of CD ~ VOT (medial)
+
+During the presentation I've filtered out the 0 values, but here I leave them. All of them should be investigated.
+
+```{r}
+speaker <- "m_19"
+final_df %>% 
+filter(id == speaker, position == "medial") %>%
+ggplot(aes(cd_n, vot_n, color = c_type))+
+geom_point()+
+theme_bw()+
+theme(legend.position="top")+
+labs(y = "VOT (normalized)", x = "CD (normalized)", caption = paste("medial position, based on",
+speaker,
+"Andi speaker"))+
+facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_14"
+final_df %>% 
+filter(id == speaker, position == "medial") %>%
+ggplot(aes(cd_n, vot_n, color = c_type))+
+geom_point()+
+theme_bw()+
+theme(legend.position="top")+
+labs(y = "VOT (normalized)", x = "CD (normalized)", caption = paste("medial position, based on",
+speaker,
+"Andi speaker"))+
+facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_11"
+final_df %>% 
+filter(id == speaker, position == "medial") %>%
+ggplot(aes(cd_n, vot_n, color = c_type))+
+geom_point()+
+theme_bw()+
+theme(legend.position="top")+
+labs(y = "VOT (normalized)", x = "CD (normalized)", caption = paste("medial position, based on",
+speaker,
+"Andi speaker"))+
+facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "f_22"
+final_df %>% 
+filter(id == speaker, position == "medial") %>%
+ggplot(aes(cd_n, vot_n, color = c_type))+
+geom_point()+
+theme_bw()+
+theme(legend.position="top")+
+labs(y = "VOT (normalized)", x = "CD (normalized)", caption = paste("medial position, based on",
+speaker,
+"Andi speaker"))+
+facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "f_24"
+final_df %>% 
+filter(id == speaker, position == "medial") %>%
+ggplot(aes(cd_n, vot_n, color = c_type))+
+geom_point()+
+theme_bw()+
+theme(legend.position="top")+
+labs(y = "VOT (normalized)", x = "CD (normalized)", caption = paste("medial position, based on",
+speaker,
+"Andi speaker"))+
+facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "f_16"
+final_df %>% 
+filter(id == speaker, position == "medial") %>%
+ggplot(aes(cd_n, vot_n, color = c_type))+
+geom_point()+
+theme_bw()+
+theme(legend.position="top")+
+labs(y = "VOT (normalized)", x = "CD (normalized)", caption = paste("medial position, based on",
+speaker,
+"Andi speaker"))+
+facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "f_8"
+final_df %>% 
+filter(id == speaker, position == "medial") %>%
+ggplot(aes(cd_n, vot_n, color = c_type))+
+geom_point()+
+theme_bw()+
+theme(legend.position="top")+
+labs(y = "VOT (normalized)", x = "CD (normalized)", caption = paste("medial position, based on",
+speaker,
+"Andi speaker"))+
+facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_75"
+final_df %>% 
+filter(id == speaker, position == "medial") %>%
+ggplot(aes(cd_n, vot_n, color = c_type))+
+geom_point()+
+theme_bw()+
+theme(legend.position="top")+
+labs(y = "VOT (normalized)", x = "CD (normalized)", caption = paste("medial position, based on",
+speaker,
+"Rutul speaker"))+
+facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_84"
+final_df %>% 
+filter(id == speaker, position == "medial") %>%
+ggplot(aes(cd_n, vot_n, color = c_type))+
+geom_point()+
+theme_bw()+
+theme(legend.position="top")+
+labs(y = "VOT (normalized)", x = "CD (normalized)", caption = paste("medial position, based on",
+speaker,
+"Rutul speaker"))+
+facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_81"
+final_df %>% 
+filter(id == speaker, position == "medial") %>%
+ggplot(aes(cd_n, vot_n, color = c_type))+
+geom_point()+
+theme_bw()+
+theme(legend.position="top")+
+labs(y = "VOT (normalized)", x = "CD (normalized)", caption = paste("medial position, based on",
+speaker,
+"Rutul speaker"))+
+facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_91"
+final_df %>% 
+filter(id == speaker, position == "medial") %>%
+ggplot(aes(cd_n, vot_n, color = c_type))+
+geom_point()+
+theme_bw()+
+theme(legend.position="top")+
+labs(y = "VOT (normalized)", x = "CD (normalized)", caption = paste("medial position, based on",
+speaker,
+"Rutul speaker"))+
+facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_92"
+final_df %>% 
+filter(id == speaker, position == "medial") %>%
+ggplot(aes(cd_n, vot_n, color = c_type))+
+geom_point()+
+theme_bw()+
+theme(legend.position="top")+
+labs(y = "VOT (normalized)", x = "CD (normalized)", caption = paste("medial position, based on",
+speaker,
+"Rutul speaker"))+
+facet_grid(repetition~affric+poa)
+```
+
+```{r}
+speaker <- "m_94"
+final_df %>% 
+filter(id == speaker, position == "medial") %>%
+ggplot(aes(cd_n, vot_n, color = c_type))+
+geom_point()+
+theme_bw()+
+theme(legend.position="top")+
+labs(y = "VOT (normalized)", x = "CD (normalized)", caption = paste("medial position, based on",
+speaker,
+"Rutul speaker"))+
+facet_grid(repetition~affric+poa)
+```
