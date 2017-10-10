@@ -27,6 +27,8 @@ correspondence <- read_tsv("correspondence.tsv")
 results %>% 
   left_join(correspondence) %>% 
   left_join(df) %>% 
+  filter(!grepl("[tʃrlnm]", folVowel),
+       !grepl("[tʃrlnm]", prevVowel)) %>% 
   mutate(repetition = ifelse(repetition == "--undefined--", "", repetition),
          repetition = paste(context, repetition),
          folVowDur = as.double(ifelse(folVowDur == "--undefined--",NA, folVowDur)),
