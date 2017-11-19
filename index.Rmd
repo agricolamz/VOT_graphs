@@ -18,7 +18,7 @@ knitr::opts_chunk$set(message=FALSE,
 # Get data
 
 ```{r}
-library(dplyr); library(readr); library(tidyr); library(ggplot2); library(stringr)
+library(tidyverse)
 
 df <- read_tsv("speakers.csv")
 
@@ -40,6 +40,7 @@ results %>%
          aff_type = ifelse(grepl("χ", stop),"uv", aff_type),
          affric = ifelse(grepl("ɬ", stop),"affricate", affric),
          affric = ifelse(grepl("χ", stop),"affricate", affric),
+         affric = ifelse(poa == "uvular", "plain", affric),
          aff_type = ifelse(grepl("χ", stop),"uv", aff_type),
          aff_type = factor(aff_type, levels = c("dent", "alv", "lat", "uv")),
          affric = factor(affric, levels = c("plain", "affricate")),
@@ -57,12 +58,24 @@ results %>%
          c_type = ifelse(geminate == "+g", paste0(c_type, ",", "+g"), c_type),
          c_type = factor(c_type, levels = c("+v", "-v", "ej", "-v,+g", "ej,+g"))) ->
   final_df
+
+final_df %>% 
+  filter(repetition != "iso 4",
+         repetition != "iso 5",
+         repetition != "iso 6",
+         repetition != "iso 0",
+         repetition != "iso i",
+         repetition != "iso NA") ->
+  final_df
+
 ```
 
 # Absolute values
 ## Absolute values of CD (medial)
 
 During the presentation I've filtered out the 0 values, but here I leave them. All of them should be investigated.
+
+### Andi
 
 ```{r}
 speaker <- unique(final_df[, 31:32])
@@ -71,6 +84,8 @@ speaker <- speaker[complete.cases(speaker),]
 final_df %>% 
   filter(id == unlist(speaker[1, 1]), position == "medial") %>%
   ggplot(aes(c_type, closdur, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, closdur, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -85,6 +100,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[2, 1]), position == "medial") %>%
   ggplot(aes(c_type, closdur, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, closdur, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -99,13 +116,15 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[3, 1]), position == "medial") %>%
   ggplot(aes(c_type, closdur, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, closdur, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
   labs(y = "CD (ms)", x = "", caption = paste("medial position, based on",
-                       speaker[3, 1],
-                       speaker[3, 2],
-                       "speaker"))+
+                                              speaker[3, 1],
+                                              speaker[3, 2],
+                                              "speaker"))+
   facet_grid(repetition~affric+poa)
 ```
 
@@ -113,6 +132,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[4, 1]), position == "medial") %>%
   ggplot(aes(c_type, closdur, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, closdur, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -127,6 +148,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[5, 1]), position == "medial") %>%
   ggplot(aes(c_type, closdur, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, closdur, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -141,6 +164,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[6, 1]), position == "medial") %>%
   ggplot(aes(c_type, closdur, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, closdur, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -155,6 +180,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[7, 1]), position == "medial") %>%
   ggplot(aes(c_type, closdur, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, closdur, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -169,6 +196,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[8, 1]), position == "medial") %>%
   ggplot(aes(c_type, closdur, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, closdur, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -183,6 +212,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[9, 1]), position == "medial") %>%
   ggplot(aes(c_type, closdur, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, closdur, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -193,10 +224,14 @@ final_df %>%
   facet_grid(repetition~affric+poa)
 ```
 
+### Rutul
+
 ```{r}
 final_df %>% 
   filter(id == unlist(speaker[10, 1]), position == "medial") %>%
   ggplot(aes(c_type, closdur, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, closdur, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -211,6 +246,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[11, 1]), position == "medial") %>%
   ggplot(aes(c_type, closdur, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, closdur, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -225,6 +262,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[12, 1]), position == "medial") %>%
   ggplot(aes(c_type, closdur, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, closdur, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -239,6 +278,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[13, 1]), position == "medial") %>%
   ggplot(aes(c_type, closdur, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, closdur, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -253,6 +294,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[14, 1]), position == "medial") %>%
   ggplot(aes(c_type, closdur, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, closdur, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -267,6 +310,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[15, 1]), position == "medial") %>%
   ggplot(aes(c_type, closdur, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, closdur, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -281,6 +326,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[16, 1]), position == "medial") %>%
   ggplot(aes(c_type, closdur, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, closdur, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -295,6 +342,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[17, 1]), position == "medial") %>%
   ggplot(aes(c_type, closdur, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, closdur, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -309,6 +358,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[18, 1]), position == "medial") %>%
   ggplot(aes(c_type, closdur, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, closdur, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -323,6 +374,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[19, 1]), position == "medial") %>%
   ggplot(aes(c_type, closdur, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, closdur, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -336,12 +389,16 @@ final_df %>%
 ## Absolute values of VOT (medial)
 During the presentation I've filtered out the 0 values, but here I leave them. All of them should be investigated. I added a new lines with 30 and 160 ms from (L&C 2001)
 
+### Andi
+
 ```{r}
 final_df %>% 
   filter(id == unlist(speaker[1, 1]), position == "medial") %>%
   ggplot(aes(c_type, VOT, color = poa, label = stop))+
   geom_hline(yintercept = 30, lty = 2)+
   geom_hline(yintercept = 160, lty = 2)+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, VOT, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -358,6 +415,8 @@ final_df %>%
   ggplot(aes(c_type, VOT, color = poa, label = stop))+
   geom_hline(yintercept = 30, lty = 2)+
   geom_hline(yintercept = 160, lty = 2)+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, VOT, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -374,6 +433,8 @@ final_df %>%
   ggplot(aes(c_type, VOT, color = poa, label = stop))+
   geom_hline(yintercept = 30, lty = 2)+
   geom_hline(yintercept = 160, lty = 2)+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, VOT, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -390,6 +451,8 @@ final_df %>%
   ggplot(aes(c_type, VOT, color = poa, label = stop))+
   geom_hline(yintercept = 30, lty = 2)+
   geom_hline(yintercept = 160, lty = 2)+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, VOT, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -406,6 +469,8 @@ final_df %>%
   ggplot(aes(c_type, VOT, color = poa, label = stop))+
   geom_hline(yintercept = 30, lty = 2)+
   geom_hline(yintercept = 160, lty = 2)+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, VOT, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -422,6 +487,8 @@ final_df %>%
   ggplot(aes(c_type, VOT, color = poa, label = stop))+
   geom_hline(yintercept = 30, lty = 2)+
   geom_hline(yintercept = 160, lty = 2)+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, VOT, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -438,6 +505,8 @@ final_df %>%
   ggplot(aes(c_type, VOT, color = poa, label = stop))+
   geom_hline(yintercept = 30, lty = 2)+
   geom_hline(yintercept = 160, lty = 2)+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, VOT, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -454,6 +523,8 @@ final_df %>%
   ggplot(aes(c_type, VOT, color = poa, label = stop))+
   geom_hline(yintercept = 30, lty = 2)+
   geom_hline(yintercept = 160, lty = 2)+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, VOT, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -470,6 +541,8 @@ final_df %>%
   ggplot(aes(c_type, VOT, color = poa, label = stop))+
   geom_hline(yintercept = 30, lty = 2)+
   geom_hline(yintercept = 160, lty = 2)+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, VOT, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -480,12 +553,16 @@ final_df %>%
   facet_grid(repetition~affric+poa)
 ```
 
+### Rutul
+
 ```{r}
 final_df %>% 
   filter(id == unlist(speaker[10, 1]), position == "medial") %>%
   ggplot(aes(c_type, VOT, color = poa, label = stop))+
   geom_hline(yintercept = 30, lty = 2)+
   geom_hline(yintercept = 160, lty = 2)+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, VOT, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -502,6 +579,8 @@ final_df %>%
   ggplot(aes(c_type, VOT, color = poa, label = stop))+
   geom_hline(yintercept = 30, lty = 2)+
   geom_hline(yintercept = 160, lty = 2)+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, VOT, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -518,6 +597,8 @@ final_df %>%
   ggplot(aes(c_type, VOT, color = poa, label = stop))+
   geom_hline(yintercept = 30, lty = 2)+
   geom_hline(yintercept = 160, lty = 2)+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, VOT, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -534,6 +615,8 @@ final_df %>%
   ggplot(aes(c_type, VOT, color = poa, label = stop))+
   geom_hline(yintercept = 30, lty = 2)+
   geom_hline(yintercept = 160, lty = 2)+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, VOT, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -550,6 +633,8 @@ final_df %>%
   ggplot(aes(c_type, VOT, color = poa, label = stop))+
   geom_hline(yintercept = 30, lty = 2)+
   geom_hline(yintercept = 160, lty = 2)+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, VOT, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -566,6 +651,8 @@ final_df %>%
   ggplot(aes(c_type, VOT, color = poa, label = stop))+
   geom_hline(yintercept = 30, lty = 2)+
   geom_hline(yintercept = 160, lty = 2)+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, VOT, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -582,6 +669,8 @@ final_df %>%
   ggplot(aes(c_type, VOT, color = poa, label = stop))+
   geom_hline(yintercept = 30, lty = 2)+
   geom_hline(yintercept = 160, lty = 2)+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, VOT, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -598,6 +687,8 @@ final_df %>%
   ggplot(aes(c_type, VOT, color = poa, label = stop))+
   geom_hline(yintercept = 30, lty = 2)+
   geom_hline(yintercept = 160, lty = 2)+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, VOT, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -614,6 +705,8 @@ final_df %>%
   ggplot(aes(c_type, VOT, color = poa, label = stop))+
   geom_hline(yintercept = 30, lty = 2)+
   geom_hline(yintercept = 160, lty = 2)+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, VOT, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -630,6 +723,8 @@ final_df %>%
   ggplot(aes(c_type, VOT, color = poa, label = stop))+
   geom_hline(yintercept = 30, lty = 2)+
   geom_hline(yintercept = 160, lty = 2)+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, VOT, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -645,10 +740,14 @@ final_df %>%
 
 During the presentation I've filtered out the 0 values, but here I leave them. All of them should be investigated.
 
+### Andi
+
 ```{r}
 final_df %>% 
   filter(id == unlist(speaker[1, 1]), position == "medial") %>%
   ggplot(aes(closdur, VOT, color = c_type, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(closdur, VOT, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -663,6 +762,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[2, 1]), position == "medial") %>%
   ggplot(aes(closdur, VOT, color = c_type, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(closdur, VOT, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -677,6 +778,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[3, 1]), position == "medial") %>%
   ggplot(aes(closdur, VOT, color = c_type, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(closdur, VOT, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -691,6 +794,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[4, 1]), position == "medial") %>%
   ggplot(aes(closdur, VOT, color = c_type, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(closdur, VOT, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -705,6 +810,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[5, 1]), position == "medial") %>%
   ggplot(aes(closdur, VOT, color = c_type, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(closdur, VOT, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -719,6 +826,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[6, 1]), position == "medial") %>%
   ggplot(aes(closdur, VOT, color = c_type, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(closdur, VOT, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -733,6 +842,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[7, 1]), position == "medial") %>%
   ggplot(aes(closdur, VOT, color = c_type, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(closdur, VOT, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -747,6 +858,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[8, 1]), position == "medial") %>%
   ggplot(aes(closdur, VOT, color = c_type, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(closdur, VOT, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -761,6 +874,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[9, 1]), position == "medial") %>%
   ggplot(aes(closdur, VOT, color = c_type, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(closdur, VOT, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -771,10 +886,14 @@ final_df %>%
   facet_grid(repetition~affric+poa)
 ```
 
+### Rutul
+
 ```{r}
 final_df %>% 
   filter(id == unlist(speaker[10, 1]), position == "medial") %>%
   ggplot(aes(closdur, VOT, color = c_type, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(closdur, VOT, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -789,6 +908,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[11, 1]), position == "medial") %>%
   ggplot(aes(closdur, VOT, color = c_type, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(closdur, VOT, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -803,6 +924,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[12, 1]), position == "medial") %>%
   ggplot(aes(closdur, VOT, color = c_type, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(closdur, VOT, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -817,6 +940,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[13, 1]), position == "medial") %>%
   ggplot(aes(closdur, VOT, color = c_type, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(closdur, VOT, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -831,6 +956,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[14, 1]), position == "medial") %>%
   ggplot(aes(closdur, VOT, color = c_type, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(closdur, VOT, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -845,6 +972,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[15, 1]), position == "medial") %>%
   ggplot(aes(closdur, VOT, color = c_type, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(closdur, VOT, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -859,6 +988,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[16, 1]), position == "medial") %>%
   ggplot(aes(closdur, VOT, color = c_type, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(closdur, VOT, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -873,6 +1004,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[17, 1]), position == "medial") %>%
   ggplot(aes(closdur, VOT, color = c_type, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(closdur, VOT, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -887,6 +1020,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[18, 1]), position == "medial") %>%
   ggplot(aes(closdur, VOT, color = c_type, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(closdur, VOT, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -901,6 +1036,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[19, 1]), position == "medial") %>%
   ggplot(aes(closdur, VOT, color = c_type, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(closdur, VOT, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -916,10 +1053,14 @@ final_df %>%
 
 During the presentation I've filtered out the 0 values, but here I leave them. All of them should be investigated.
 
+### Andi
+
 ```{r}
 final_df %>% 
   filter(id == unlist(speaker[1, 1]), position == "medial") %>%
   ggplot(aes(c_type, cd_n, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, cd_n, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -934,6 +1075,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[2, 1]), position == "medial") %>%
   ggplot(aes(c_type, cd_n, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, cd_n, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -948,6 +1091,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[3, 1]), position == "medial") %>%
   ggplot(aes(c_type, cd_n, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, cd_n, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -962,6 +1107,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[4, 1]), position == "medial") %>%
   ggplot(aes(c_type, vot_n, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, cd_n, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -976,6 +1123,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[5, 1]), position == "medial") %>%
   ggplot(aes(c_type, vot_n, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, cd_n, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -990,6 +1139,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[6, 1]), position == "medial") %>%
   ggplot(aes(c_type, vot_n, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, cd_n, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -1004,6 +1155,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[7, 1]), position == "medial") %>%
   ggplot(aes(c_type, vot_n, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, cd_n, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -1018,6 +1171,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[8, 1]), position == "medial") %>%
   ggplot(aes(c_type, vot_n, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, cd_n, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -1032,6 +1187,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[9, 1]), position == "medial") %>%
   ggplot(aes(c_type, vot_n, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, cd_n, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -1042,10 +1199,14 @@ final_df %>%
   facet_grid(repetition~affric+poa)
 ```
 
+### Rutul
+
 ```{r}
 final_df %>% 
   filter(id == unlist(speaker[10, 1]), position == "medial") %>%
   ggplot(aes(c_type, vot_n, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, cd_n, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -1060,6 +1221,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[11, 1]), position == "medial") %>%
   ggplot(aes(c_type, cd_n, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, cd_n, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -1074,6 +1237,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[12, 1]), position == "medial") %>%
   ggplot(aes(c_type, cd_n, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, cd_n, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -1088,6 +1253,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[13, 1]), position == "medial") %>%
   ggplot(aes(c_type, cd_n, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, cd_n, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -1102,6 +1269,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[14, 1]), position == "medial") %>%
   ggplot(aes(c_type, cd_n, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, cd_n, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -1116,6 +1285,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[15, 1]), position == "medial") %>%
   ggplot(aes(c_type, cd_n, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, cd_n, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -1130,6 +1301,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[16, 1]), position == "medial") %>%
   ggplot(aes(c_type, cd_n, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, cd_n, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -1144,6 +1317,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[17, 1]), position == "medial") %>%
   ggplot(aes(c_type, cd_n, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, cd_n, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -1158,6 +1333,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[18, 1]), position == "medial") %>%
   ggplot(aes(c_type, cd_n, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, cd_n, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -1172,6 +1349,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[19, 1]), position == "medial") %>%
   ggplot(aes(c_type, cd_n, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, cd_n, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -1187,11 +1366,14 @@ final_df %>%
 ## Relative values of VOT (medial)
 During the presentation I've filtered out the 0 values, but here I leave them. All of them should be investigated. I added a new lines with 30 and 160 ms from (L&C 2001)
 
+### Andi
 
 ```{r}
 final_df %>% 
   filter(id == unlist(speaker[1, 1]), position == "medial") %>%
   ggplot(aes(c_type, vot_n, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, vot_n, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -1206,6 +1388,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[2, 1]), position == "medial") %>%
   ggplot(aes(c_type, vot_n, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, vot_n, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -1220,6 +1404,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[3, 1]), position == "medial") %>%
   ggplot(aes(c_type, vot_n, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, vot_n, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -1234,6 +1420,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[4, 1]), position == "medial") %>%
   ggplot(aes(c_type, vot_n, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, vot_n, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -1248,6 +1436,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[5, 1]), position == "medial") %>%
   ggplot(aes(c_type, vot_n, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, vot_n, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -1262,6 +1452,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[6, 1]), position == "medial") %>%
   ggplot(aes(c_type, vot_n, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, vot_n, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -1276,6 +1468,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[7, 1]), position == "medial") %>%
   ggplot(aes(c_type, vot_n, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, vot_n, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -1290,6 +1484,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[8, 1]), position == "medial") %>%
   ggplot(aes(c_type, vot_n, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, vot_n, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -1304,6 +1500,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[9, 1]), position == "medial") %>%
   ggplot(aes(c_type, vot_n, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, vot_n, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -1314,10 +1512,14 @@ final_df %>%
   facet_grid(repetition~affric+poa)
 ```
 
+### Rutul
+
 ```{r}
 final_df %>% 
   filter(id == unlist(speaker[10, 1]), position == "medial") %>%
   ggplot(aes(c_type, vot_n, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, vot_n, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -1332,6 +1534,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[11, 1]), position == "medial") %>%
   ggplot(aes(c_type, vot_n, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, vot_n, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -1346,6 +1550,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[12, 1]), position == "medial") %>%
   ggplot(aes(c_type, vot_n, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, vot_n, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -1360,6 +1566,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[13, 1]), position == "medial") %>%
   ggplot(aes(c_type, vot_n, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, vot_n, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -1374,6 +1582,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[14, 1]), position == "medial") %>%
   ggplot(aes(c_type, vot_n, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, vot_n, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -1388,6 +1598,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[15, 1]), position == "medial") %>%
   ggplot(aes(c_type, vot_n, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, vot_n, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -1402,6 +1614,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[16, 1]), position == "medial") %>%
   ggplot(aes(c_type, vot_n, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, vot_n, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -1416,6 +1630,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[17, 1]), position == "medial") %>%
   ggplot(aes(c_type, vot_n, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, vot_n, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -1430,6 +1646,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[18, 1]), position == "medial") %>%
   ggplot(aes(c_type, vot_n, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, vot_n, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -1444,6 +1662,8 @@ final_df %>%
 final_df %>% 
   filter(id == unlist(speaker[19, 1]), position == "medial") %>%
   ggplot(aes(c_type, vot_n, color = poa, label = stop))+
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(c_type, vot_n, label = stop))+
   geom_text(show.legend = F)+
   theme_bw()+
   theme(legend.position="top")+
@@ -1461,14 +1681,18 @@ final_df %>%
 
 During the presentation I've filtered out the 0 values, but here I leave them. All of them should be investigated.
 
+### Andi
+
 ```{r}
 final_df %>% 
   filter(id == unlist(speaker[1, 1]), position == "medial") %>%
-ggplot(aes(cd_n, vot_n, color = c_type, label = stop)) +
-geom_text(show.legend = F)+
-theme_bw()+
-theme(legend.position="top")+
-labs(y = "VOT (normalized)", x = "CD (normalized)", caption = paste("medial position, based on",
+  ggplot(aes(cd_n, vot_n, color = c_type, label = stop)) +
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(cd_n, vot_n, label = stop))+
+  geom_text(show.legend = F)+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (normalized)", x = "CD (normalized)", caption = paste("medial position, based on",
                                               speaker[1, 1],
                                               speaker[1, 2],
                                               "speaker"))+
@@ -1478,11 +1702,13 @@ labs(y = "VOT (normalized)", x = "CD (normalized)", caption = paste("medial posi
 ```{r}
 final_df %>% 
   filter(id == unlist(speaker[2, 1]), position == "medial") %>%
-ggplot(aes(cd_n, vot_n, color = c_type, label = stop)) +
-geom_text(show.legend = F)+
-theme_bw()+
-theme(legend.position="top")+
-labs(y = "VOT (normalized)", x = "CD (normalized)", caption = paste("medial position, based on",
+  ggplot(aes(cd_n, vot_n, color = c_type, label = stop)) +
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(cd_n, vot_n, label = stop))+
+  geom_text(show.legend = F)+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (normalized)", x = "CD (normalized)", caption = paste("medial position, based on",
                                               speaker[2, 1],
                                               speaker[2, 2],
                                               "speaker"))+
@@ -1492,11 +1718,13 @@ labs(y = "VOT (normalized)", x = "CD (normalized)", caption = paste("medial posi
 ```{r}
 final_df %>% 
   filter(id == unlist(speaker[3, 1]), position == "medial") %>%
-ggplot(aes(cd_n, vot_n, color = c_type, label = stop)) +
-geom_text(show.legend = F)+
-theme_bw()+
-theme(legend.position="top")+
-labs(y = "VOT (normalized)", x = "CD (normalized)", caption = paste("medial position, based on",
+  ggplot(aes(cd_n, vot_n, color = c_type, label = stop)) +
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(cd_n, vot_n, label = stop))+
+  geom_text(show.legend = F)+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (normalized)", x = "CD (normalized)", caption = paste("medial position, based on",
                                               speaker[3, 1],
                                               speaker[3, 2],
                                               "speaker"))+
@@ -1506,11 +1734,13 @@ labs(y = "VOT (normalized)", x = "CD (normalized)", caption = paste("medial posi
 ```{r}
 final_df %>% 
   filter(id == unlist(speaker[4, 1]), position == "medial") %>%
-ggplot(aes(cd_n, vot_n, color = c_type, label = stop)) +
-geom_text(show.legend = F)+
-theme_bw()+
-theme(legend.position="top")+
-labs(y = "VOT (normalized)", x = "CD (normalized)", caption = paste("medial position, based on",
+  ggplot(aes(cd_n, vot_n, color = c_type, label = stop)) +
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(cd_n, vot_n, label = stop))+
+  geom_text(show.legend = F)+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (normalized)", x = "CD (normalized)", caption = paste("medial position, based on",
                                               speaker[4, 1],
                                               speaker[4, 2],
                                               "speaker"))+
@@ -1520,11 +1750,13 @@ labs(y = "VOT (normalized)", x = "CD (normalized)", caption = paste("medial posi
 ```{r}
 final_df %>% 
   filter(id == unlist(speaker[5, 1]), position == "medial") %>%
-ggplot(aes(cd_n, vot_n, color = c_type, label = stop)) +
-geom_text(show.legend = F)+
-theme_bw()+
-theme(legend.position="top")+
-labs(y = "VOT (normalized)", x = "CD (normalized)",  caption = paste("medial position, based on",
+  ggplot(aes(cd_n, vot_n, color = c_type, label = stop)) +
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(cd_n, vot_n, label = stop))+
+  geom_text(show.legend = F)+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (normalized)", x = "CD (normalized)",  caption = paste("medial position, based on",
                                               speaker[5, 1],
                                               speaker[5, 2],
                                               "speaker"))+
@@ -1534,11 +1766,13 @@ labs(y = "VOT (normalized)", x = "CD (normalized)",  caption = paste("medial pos
 ```{r}
 final_df %>% 
   filter(id == unlist(speaker[6, 1]), position == "medial") %>%
-ggplot(aes(cd_n, vot_n, color = c_type, label = stop)) +
-geom_text(show.legend = F)+
-theme_bw()+
-theme(legend.position="top")+
-labs(y = "VOT (normalized)", x = "CD (normalized)",  caption = paste("medial position, based on",
+  ggplot(aes(cd_n, vot_n, color = c_type, label = stop)) +
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(cd_n, vot_n, label = stop))+
+  geom_text(show.legend = F)+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (normalized)", x = "CD (normalized)",  caption = paste("medial position, based on",
                                               speaker[6, 1],
                                               speaker[6, 2],
                                               "speaker"))+
@@ -1548,11 +1782,13 @@ labs(y = "VOT (normalized)", x = "CD (normalized)",  caption = paste("medial pos
 ```{r}
 final_df %>% 
   filter(id == unlist(speaker[7, 1]), position == "medial") %>%
-ggplot(aes(cd_n, vot_n, color = c_type, label = stop)) +
-geom_text(show.legend = F)+
-theme_bw()+
-theme(legend.position="top")+
-labs(y = "VOT (normalized)", x = "CD (normalized)", caption = paste("medial position, based on",
+  ggplot(aes(cd_n, vot_n, color = c_type, label = stop)) +
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(cd_n, vot_n, label = stop))+
+  geom_text(show.legend = F)+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (normalized)", x = "CD (normalized)", caption = paste("medial position, based on",
                                               speaker[7, 1],
                                               speaker[7, 2],
                                               "speaker"))+
@@ -1562,11 +1798,13 @@ labs(y = "VOT (normalized)", x = "CD (normalized)", caption = paste("medial posi
 ```{r}
 final_df %>% 
   filter(id == unlist(speaker[8, 1]), position == "medial") %>%
-ggplot(aes(cd_n, vot_n, color = c_type, label = stop)) +
-geom_text(show.legend = F)+
-theme_bw()+
-theme(legend.position="top")+
-labs(y = "VOT (normalized)", x = "CD (normalized)",  caption = paste("medial position, based on",
+  ggplot(aes(cd_n, vot_n, color = c_type, label = stop)) +
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(cd_n, vot_n, label = stop))+
+  geom_text(show.legend = F)+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (normalized)", x = "CD (normalized)",  caption = paste("medial position, based on",
                                               speaker[8, 1],
                                               speaker[8, 2],
                                               "speaker"))+
@@ -1576,25 +1814,31 @@ labs(y = "VOT (normalized)", x = "CD (normalized)",  caption = paste("medial pos
 ```{r}
 final_df %>% 
   filter(id == unlist(speaker[9, 1]), position == "medial") %>%
-ggplot(aes(cd_n, vot_n, color = c_type, label = stop)) +
-geom_text(show.legend = F)+
-theme_bw()+
-theme(legend.position="top")+
-labs(y = "VOT (normalized)", x = "CD (normalized)",  caption = paste("medial position, based on",
+  ggplot(aes(cd_n, vot_n, color = c_type, label = stop)) +
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(cd_n, vot_n, label = stop))+
+  geom_text(show.legend = F)+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (normalized)", x = "CD (normalized)",  caption = paste("medial position, based on",
                                               speaker[9, 1],
                                               speaker[9, 2],
                                               "speaker"))+
   facet_grid(repetition~affric+poa)
 ```
 
+### Rutul
+
 ```{r}
 final_df %>% 
   filter(id == unlist(speaker[10, 1]), position == "medial") %>%
-ggplot(aes(cd_n, vot_n, color = c_type, label = stop)) +
-geom_text(show.legend = F)+
-theme_bw()+
-theme(legend.position="top")+
-labs(y = "VOT (normalized)", x = "CD (normalized)",  caption = paste("medial position, based on",
+  ggplot(aes(cd_n, vot_n, color = c_type, label = stop)) +
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(cd_n, vot_n, label = stop))+
+  geom_text(show.legend = F)+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (normalized)", x = "CD (normalized)",  caption = paste("medial position, based on",
                                               speaker[10, 1],
                                               speaker[10, 2],
                                               "speaker"))+
@@ -1604,11 +1848,13 @@ labs(y = "VOT (normalized)", x = "CD (normalized)",  caption = paste("medial pos
 ```{r}
 final_df %>% 
   filter(id == unlist(speaker[11, 1]), position == "medial") %>%
-ggplot(aes(cd_n, vot_n, color = c_type, label = stop)) +
-geom_text(show.legend = F)+
-theme_bw()+
-theme(legend.position="top")+
-labs(y = "VOT (normalized)", x = "CD (normalized)", caption = paste("medial position, based on",
+  ggplot(aes(cd_n, vot_n, color = c_type, label = stop)) +
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(cd_n, vot_n, label = stop))+
+  geom_text(show.legend = F)+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (normalized)", x = "CD (normalized)", caption = paste("medial position, based on",
                                               speaker[11, 1],
                                               speaker[11, 2],
                                               "speaker"))+
@@ -1618,11 +1864,13 @@ labs(y = "VOT (normalized)", x = "CD (normalized)", caption = paste("medial posi
 ```{r}
 final_df %>% 
   filter(id == unlist(speaker[12, 1]), position == "medial") %>%
-ggplot(aes(cd_n, vot_n, color = c_type, label = stop)) +
-geom_text(show.legend = F)+
-theme_bw()+
-theme(legend.position="top")+
-labs(y = "VOT (normalized)", x = "CD (normalized)",  caption = paste("medial position, based on",
+  ggplot(aes(cd_n, vot_n, color = c_type, label = stop)) +
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(cd_n, vot_n, label = stop))+
+  geom_text(show.legend = F)+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (normalized)", x = "CD (normalized)",  caption = paste("medial position, based on",
                                               speaker[12, 1],
                                               speaker[12, 2],
                                               "speaker"))+
@@ -1632,11 +1880,13 @@ labs(y = "VOT (normalized)", x = "CD (normalized)",  caption = paste("medial pos
 ```{r}
 final_df %>% 
   filter(id == unlist(speaker[13, 1]), position == "medial") %>%
-ggplot(aes(cd_n, vot_n, color = c_type, label = stop)) +
-geom_text(show.legend = F)+
-theme_bw()+
-theme(legend.position="top")+
-labs(y = "VOT (normalized)", x = "CD (normalized)",  caption = paste("medial position, based on",
+  ggplot(aes(cd_n, vot_n, color = c_type, label = stop)) +
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(cd_n, vot_n, label = stop))+
+  geom_text(show.legend = F)+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (normalized)", x = "CD (normalized)",  caption = paste("medial position, based on",
                                               speaker[13, 1],
                                               speaker[13, 2],
                                               "speaker"))+
@@ -1646,11 +1896,13 @@ labs(y = "VOT (normalized)", x = "CD (normalized)",  caption = paste("medial pos
 ```{r}
 final_df %>% 
   filter(id == unlist(speaker[14, 1]), position == "medial") %>%
-ggplot(aes(cd_n, vot_n, color = c_type, label = stop)) +
-geom_text(show.legend = F)+
-theme_bw()+
-theme(legend.position="top")+
-labs(y = "VOT (normalized)", x = "CD (normalized)",  caption = paste("medial position, based on",
+  ggplot(aes(cd_n, vot_n, color = c_type, label = stop)) +
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(cd_n, vot_n, label = stop))+
+  geom_text(show.legend = F)+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (normalized)", x = "CD (normalized)",  caption = paste("medial position, based on",
                                               speaker[14, 1],
                                               speaker[14, 2],
                                               "speaker"))+
@@ -1660,11 +1912,13 @@ labs(y = "VOT (normalized)", x = "CD (normalized)",  caption = paste("medial pos
 ```{r}
 final_df %>% 
   filter(id == unlist(speaker[15, 1]), position == "medial") %>%
-ggplot(aes(cd_n, vot_n, color = c_type, label = stop)) +
-geom_text(show.legend = F)+
-theme_bw()+
-theme(legend.position="top")+
-labs(y = "VOT (normalized)", x = "CD (normalized)",  caption = paste("medial position, based on",
+  ggplot(aes(cd_n, vot_n, color = c_type, label = stop)) +
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(cd_n, vot_n, label = stop))+
+  geom_text(show.legend = F)+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (normalized)", x = "CD (normalized)",  caption = paste("medial position, based on",
                                               speaker[15, 1],
                                               speaker[15, 2],
                                               "speaker"))+
@@ -1674,11 +1928,13 @@ labs(y = "VOT (normalized)", x = "CD (normalized)",  caption = paste("medial pos
 ```{r}
 final_df %>% 
   filter(id == unlist(speaker[16, 1]), position == "medial") %>%
-ggplot(aes(cd_n, vot_n, color = c_type, label = stop)) +
-geom_text(show.legend = F)+
-theme_bw()+
-theme(legend.position="top")+
-labs(y = "VOT (normalized)", x = "CD (normalized)",  caption = paste("medial position, based on",
+  ggplot(aes(cd_n, vot_n, color = c_type, label = stop)) +
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(cd_n, vot_n, label = stop))+
+  geom_text(show.legend = F)+
+  theme_bw()+
+  theme(legend.position="top")+
+  labs(y = "VOT (normalized)", x = "CD (normalized)",  caption = paste("medial position, based on",
                                               speaker[16, 1],
                                               speaker[16, 2],
                                               "speaker"))+
@@ -1689,6 +1945,8 @@ labs(y = "VOT (normalized)", x = "CD (normalized)",  caption = paste("medial pos
 final_df %>%
   filter(id == unlist(speaker[17, 1]), position == "medial") %>%
   ggplot(aes(cd_n, vot_n, color = c_type, label = stop)) +
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(cd_n, vot_n, label = stop))+
   geom_text(show.legend = F)+
   theme_bw() +
   theme(legend.position = "top") +
@@ -1707,6 +1965,8 @@ final_df %>%
 final_df %>%
   filter(id == unlist(speaker[18, 1]), position == "medial") %>%
   ggplot(aes(cd_n, vot_n, color = c_type, label = stop)) +
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(cd_n, vot_n, label = stop))+
   geom_text(show.legend = F)+
   theme_bw() +
   theme(legend.position = "top") +
@@ -1725,6 +1985,8 @@ final_df %>%
 final_df %>%
   filter(id == unlist(speaker[19, 1]), position == "medial") %>%
   ggplot(aes(cd_n, vot_n, color = c_type, label = stop)) +
+  geom_text(data = final_df[, -31], color = "grey", alpha = 0.2,
+            aes(cd_n, vot_n, label = stop))+
   geom_text(show.legend = F)+
   theme_bw() +
   theme(legend.position = "top") +
