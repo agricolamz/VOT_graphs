@@ -1,5 +1,5 @@
 ---
-title: "2. Vowels"
+title: "4. Position"
 ---
 
 ```{r setup, include=FALSE}
@@ -100,70 +100,20 @@ final_df %>%
   final_df
 
 final_df %>% 
-  filter(position == "medial") %>%
   mutate(stop_label = str_replace_all(final_df$stop, "[wʲʷˤχ\\(\\)\\?]", ""),
          folVowel = str_replace_all(final_df$folVowel, "[\\(\\)]", "")) ->
   final_df
 ```
 
 ## Get Data
-```{r}
-final_df %>%
-  filter(folVowel == "ɨ"|
-           folVowel == "ɨ:"|
-           folVowel == "u"|
-           folVowel == "i"|
-           folVowel == "i)"
-         ) ->
-  high_vowels
-
-final_df %>% 
-  filter(folVowel == "i"|
-           folVowel == "e"|
-           folVowel == "ẽ") ->
-  front_vowels
-
-```
-
-
 
 ## Absolute values in (medial position) for high vowels
 ### CD (medial position)
 ```{r}
 final_df %>%
-  filter(
-    folVowel != "i",
-    folVowel != "i)",
-    folVowel != "ɨ",
-    folVowel != "ɨ:",
-    folVowel != "ɨ)",
-    folVowel != "(u)",
-    folVowel != "(u",
-    folVowel != "u)",
-    folVowel != "u",
-    folVowel != "ʔ",
-    folVowel != "ɢ",
-    folVowel != "ʔ)",
-    folVowel != "b",
-    folVowel != "j",
-    folVowel != "j",
-    folVowel != "j)",
-    folVowel != "(j)",
-    folVowel != "k'",
-    folVowel != "p'",
-    folVowel != "q",
-    folVowel != "qχ",
-    folVowel != "w",
-    folVowel != "(w",
-    folVowel != "w)",
-    folVowel != "(w)"
-  ) %>% 
   ggplot(aes(c_type, closdur, label = stop_label))+
   geom_text(aes(y = 430), alpha = 0.1)+
-  geom_text(data = high_vowels, aes(y = 430, label = stop_label), alpha = 0.1)+
-  geom_boxplot()+
-  geom_point(data = high_vowels, alpha = 0.8,
-               aes(c_type, closdur, color = folVowel))+
+  geom_boxplot(aes(color = position))+
   theme_bw()+
   theme(legend.position="bottom")+
   facet_grid(Gender~affric+poa, scale = "free_x")+
@@ -172,83 +122,28 @@ final_df %>%
 
 ### VOT (medial position)
 ```{r}
-final_df %>% 
-    filter(
-    folVowel != "i",
-    folVowel != "i)",
-    folVowel != "ɨ",
-    folVowel != "ɨ:",
-    folVowel != "ɨ)",
-    folVowel != "(u)",
-    folVowel != "(u",
-    folVowel != "u)",
-    folVowel != "u",
-    folVowel != "ʔ",
-    folVowel != "ɢ",
-    folVowel != "ʔ)",
-    folVowel != "b",
-    folVowel != "j",
-    folVowel != "j",
-    folVowel != "j)",
-    folVowel != "(j)",
-    folVowel != "k'",
-    folVowel != "p'",
-    folVowel != "q",
-    folVowel != "qχ",
-    folVowel != "w",
-    folVowel != "(w",
-    folVowel != "w)",
-    folVowel != "(w)"
-  ) %>% 
+final_df %>%
   ggplot(aes(c_type, VOT, label = stop_label))+
   geom_text(aes(y = 430), alpha = 0.1)+
-  geom_text(data = high_vowels, aes(y = 430, label = stop_label), alpha = 0.1)+
-  geom_boxplot()+
-  geom_point(data = high_vowels, alpha = 0.8,
-               aes(c_type, VOT, color = folVowel))+
+  geom_boxplot(aes(color = position))+
   theme_bw()+
   theme(legend.position="bottom")+
-  geom_hline(yintercept = 30, lty = 2)+
-  geom_hline(yintercept = 160, lty = 2)+
   facet_grid(Gender~affric+poa, scale = "free_x")+
-  labs(y = "VOT (ms)", x = "")
+  labs(y = "CD (ms)", x = "")+
+  geom_hline(yintercept = 30, lty = 2)+
+  geom_hline(yintercept = 160, lty = 2)
 ```
 
 ### CD and VOT (medial position)
 ```{r}
-final_df %>% 
-    filter(
-    folVowel != "i",
-    folVowel != "i)",
-    folVowel != "ɨ",
-    folVowel != "ɨ:",
-    folVowel != "ɨ)",
-    folVowel != "(u)",
-    folVowel != "(u",
-    folVowel != "u)",
-    folVowel != "u",
-    folVowel != "ʔ",
-    folVowel != "ɢ",
-    folVowel != "ʔ)",
-    folVowel != "b",
-    folVowel != "j",
-    folVowel != "j",
-    folVowel != "j)",
-    folVowel != "(j)",
-    folVowel != "k'",
-    folVowel != "p'",
-    folVowel != "q",
-    folVowel != "qχ",
-    folVowel != "w",
-    folVowel != "(w",
-    folVowel != "w)",
-    folVowel != "(w)"
-  ) %>% 
-  ggplot(aes(closdur, VOT, label = stop))+
-  geom_text(color = "grey")+
-  geom_text(data = high_vowels, aes(closdur, VOT, label = stop_label, color = folVowel))+
+final_df %>%
+  ggplot(aes(closdur, VOT, label = stop_label, color = position, group = position))+
+  geom_text(aes(color = position))+
+  stat_ellipse(color = "black")+
   theme_bw()+
   theme(legend.position="bottom")+
+  facet_grid(Gender~affric+poa, scale = "free_x")+
+  labs(y = "CD (ms)", x = "")+
   geom_hline(yintercept = 30, lty = 2)+
   geom_hline(yintercept = 160, lty = 2)+
   facet_grid(Gender~affric+poa, scale = "free_x")+
