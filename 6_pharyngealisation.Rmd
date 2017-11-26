@@ -106,9 +106,10 @@ final_df %>%
   final_df
 ```
 
-## Get Data
+## Selected words
 
-## Absolute values in (medial position) for high vowels
+
+## Whole dataː Absolute values in (medial position)
 ### CD (medial position)
 ```{r}
 final_df %>%
