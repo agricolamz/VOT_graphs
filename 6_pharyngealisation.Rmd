@@ -1,0 +1,152 @@
+---
+title: "6. Pharyngealisation"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message = FALSE, warning = FALSE)
+library(tidyverse)
+
+df <- read_tsv("data/speakers.csv")
+
+results <- read_tsv("data/results.tsv")
+correspondence <- read_tsv("data/correspondence.tsv")
+
+results %>% 
+  left_join(correspondence) %>% 
+  left_join(df) %>% 
+  filter(!grepl("[tʃrlnm]", folVowel),
+       !grepl("[tʃrlnm]", prevVowel)) %>% 
+  mutate(repetition = ifelse(repetition == "--undefined--", "", repetition),
+         repetition = paste(context, repetition),
+         folVowDur = as.double(ifelse(folVowDur == "--undefined--",NA, folVowDur)),
+         geminate = ifelse(grepl("[ː:]", stop),"+g", "-g"),
+         aff_type = ifelse(grepl("[sz]", stop),"dent", NA),
+         aff_type = ifelse(grepl("[ʃʒšžǯ]", stop),"alv", aff_type),
+         aff_type = ifelse(grepl("ɬ", stop),"lat", aff_type),
+         aff_type = ifelse(grepl("χ", stop),"uv", aff_type),
+         affric = ifelse(grepl("ɬ", stop),"affricate", affric),
+         affric = ifelse(grepl("χ", stop),"affricate", affric),
+         affric = ifelse(poa == "uvular", "plain", affric),
+         aff_type = ifelse(grepl("χ", stop),"uv", aff_type),
+         poa = ifelse(stop == "ɡ", "velar", poa),
+         aff_type = factor(aff_type, levels = c("dent", "alv", "lat", "uv")),
+         affric = factor(affric, levels = c("plain", "affricate")),
+         voice = ifelse(voice == "voiced", "+v", "-v")) %>% 
+  mutate(fric = fric * 1000,
+         postfric = postfric*1000,
+         folVowDur = folVowDur*1000,
+         closdur = closdur*1000,
+         VOT = fric + postfric,
+         cd_n = closdur/folVowDur,
+         vot_n = VOT/folVowDur,
+         utterance = paste0(context, "_", repetition),
+         poa = factor(poa, levels = c("bilabial", "dental", "velar", "uvular")),
+         c_type = ifelse(glott == "glottalic", "ej", voice),
+         c_type = ifelse(geminate == "+g", paste0(c_type, ",", "+g"), c_type),
+         c_type = factor(c_type, levels = c("+v", "-v", "ej", "-v,+g", "ej,+g"))) ->
+  final_df
+
+final_df %>%
+  mutate(prevVowel = ifelse(is.na(prevVowel), "#", prevVowel)) %>% 
+  filter(
+    repetition != "iso 4",
+    repetition != "iso 5",
+    repetition != "iso 6",
+    repetition != "iso 0",
+    repetition != "iso i",
+    repetition != "iso NA",
+    prevVowel != "b",
+    prevVowel != "g",
+    prevVowel != "g\\)",
+    prevVowel != "j\\)",
+    prevVowel != "k",
+    prevVowel != "\\(k",
+    prevVowel != "k:",
+    prevVowel != "k'",
+    prevVowel != "\\(qχ",
+    prevVowel != "s",
+    prevVowel != "\\(s",
+    prevVowel != "w",
+    prevVowel != "z",
+    prevVowel != "χ",
+    folVowel != "ʔ",
+    folVowel != "ɢ",
+    folVowel != "ʔ\\)",
+    folVowel != "b",
+    folVowel != "j",
+    folVowel != "j",
+    folVowel != "j)",
+    folVowel != "\\(j\\)",
+    folVowel != "k'",
+    folVowel != "p'",
+    folVowel != "q",
+    folVowel != "qχ",
+    folVowel != "w",
+    folVowel != "\\(w",
+    folVowel != "w\\)",
+    folVowel != "\\(w\\)",
+    stop != "(ʔ",
+    stop != "(ʔ)",
+    stop != "ʔ)",
+    stop != "n:)",
+    stop != "n)",
+    stop != "(n",    
+    stop != "(h",
+    stop != "(j",
+    stop != "(j)",
+    stop != "j)",
+    stop != "(s",
+    stop != "(w)") ->
+  final_df
+
+final_df %>% 
+  mutate(stop_label = str_replace_all(final_df$stop, "[wʲʷˤχ\\(\\)\\?]", ""),
+         folVowel = str_replace_all(final_df$folVowel, "[\\(\\)]", "")) %>%
+  filter(poa == "uvular") ->
+  final_df
+```
+
+## Get Data
+
+## Absolute values in (medial position) for high vowels
+### CD (medial position)
+```{r}
+final_df %>%
+  ggplot(aes(c_type, closdur, label = stop_label))+
+  geom_text(aes(y = 430), alpha = 0.1)+
+  geom_boxplot(aes(color = pharlzd))+
+  theme_bw()+
+  theme(legend.position="bottom")+
+  facet_grid(Gender~affric+poa, scale = "free_x")+
+  labs(y = "CD (ms)", x = "")
+```
+
+### VOT (medial position)
+```{r}
+final_df %>%
+  ggplot(aes(c_type, VOT, label = stop_label))+
+  geom_text(aes(y = 430), alpha = 0.1)+
+  geom_boxplot(aes(color = pharlzd))+
+  theme_bw()+
+  theme(legend.position="bottom")+
+  facet_grid(Gender~affric+poa, scale = "free_x")+
+  labs(y = "CD (ms)", x = "")+
+  geom_hline(yintercept = 30, lty = 2)+
+  geom_hline(yintercept = 160, lty = 2)
+```
+
+### CD and VOT (medial position)
+```{r}
+final_df %>%
+  ggplot(aes(closdur, VOT, label = stop_label, color = pharlzd, group = pharlzd))+
+  geom_text(aes(color = pharlzd))+
+  stat_ellipse(color = "black")+
+  theme_bw()+
+  theme(legend.position="bottom")+
+  facet_grid(Gender~affric+poa, scale = "free_x")+
+  labs(y = "CD (ms)", x = "")+
+  geom_hline(yintercept = 30, lty = 2)+
+  geom_hline(yintercept = 160, lty = 2)+
+  facet_grid(Gender~affric+poa, scale = "free_x")+
+  labs(y = "VOT (ms)", x = "CD (ms)")
+```
