@@ -7,8 +7,8 @@ navbar:
       href: 2_vowels.html
     - text: "3. utterance"
       href: 3_utterance.html
-    - text: "4. positions"
-      href: 4_positions.html
+    - text: "4. position"
+      href: 4_position.html
     - text: "5. voicing"
       href: 5_voicing.html
     - text: "6. pharyngealisation"

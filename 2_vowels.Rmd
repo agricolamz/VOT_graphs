@@ -100,9 +100,9 @@ final_df %>%
   final_df
 
 final_df %>% 
-  filter(position == "medial") %>%
   mutate(stop_label = str_replace_all(final_df$stop, "[wʲʷˤχ\\(\\)\\?]", ""),
-         folVowel = str_replace_all(final_df$folVowel, "[\\(\\)]", "")) ->
+         folVowel = str_replace_all(final_df$folVowel, "[\\(\\)]", "")) %>%
+    filter(position == "medial") ->
   final_df
 ```
 
@@ -140,23 +140,7 @@ final_df %>%
     folVowel != "(u)",
     folVowel != "(u",
     folVowel != "u)",
-    folVowel != "u",
-    folVowel != "ʔ",
-    folVowel != "ɢ",
-    folVowel != "ʔ)",
-    folVowel != "b",
-    folVowel != "j",
-    folVowel != "j",
-    folVowel != "j)",
-    folVowel != "(j)",
-    folVowel != "k'",
-    folVowel != "p'",
-    folVowel != "q",
-    folVowel != "qχ",
-    folVowel != "w",
-    folVowel != "(w",
-    folVowel != "w)",
-    folVowel != "(w)"
+    folVowel != "u"
   ) %>% 
   ggplot(aes(c_type, closdur, label = stop_label))+
   geom_text(aes(y = 430), alpha = 0.1)+
