@@ -1,0 +1,18 @@
+name: ""
+navbar: 
+  left:
+    - text: "1. cd, vot"
+      href: 1_CD_VOT.html
+    - text: "2. vowels"
+      href: 2_vowels.html
+    - text: "3. utterance"
+      href: 3_utterance.html
+    - text: "4. positions"
+      href: 4_positions.html
+    - text: "5. voicing"
+      href: 5_voicing.html
+    - text: "6. pharyngealisation"
+      href: 6_pharyngealisation.html
+    - text: "7. gemination"
+      href: 7_gemination.html
+output_dir: docs
