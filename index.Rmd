@@ -1,20 +1,5 @@
 ---
-title: "RMarkdown: от документа до динамического сайта"
-author: "Г. Мороз"
 output:
   html_document:
     toc: false
 ---
-
-### Библиотеки:
-```{r, message=FALSE}
-packageVersion("rmarkdown")
-packageVersion("blogdown")
-packageVersion("bookdown")
-packageVersion("xaringan")
-packageVersion("ggplot2")
-packageVersion("DT")
-packageVersion("leaflet")
-packageVersion("plotly")
-```
-
