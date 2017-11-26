@@ -7,7 +7,6 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 library(tidyverse)
 
 df <- read_tsv("data/speakers.csv")
-
 results <- read_tsv("data/results.tsv")
 correspondence <- read_tsv("data/correspondence.tsv")
 
