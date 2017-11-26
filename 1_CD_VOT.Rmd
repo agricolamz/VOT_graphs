@@ -145,7 +145,7 @@ final_df %>%
   labs(y = "VOT (ms)", x = "CD (ms)")
 ```
 
-## Relative values in (medial position)
+## Relative values in (medial position): СD + VOT
 ### CD (medial position)
 ```{r}
 final_df %>% 
@@ -176,3 +176,39 @@ final_df %>%
   facet_grid(Gender~affric+poa, scale = "free_x")+
   labs(y = "relative value VOT", x = "")
 ```
+
+## Relative values in (medial position): by next vowel
+### CD (medial position)
+```{r}
+final_df %>% 
+  filter(position == "medial") %>%
+  mutate(rel_cd = closdur/folVowDur,
+         rel_vot = VOT/folVowDur) %>%
+  ggplot(aes(c_type, rel_cd, fill = Language, label = stop))+
+  geom_text(aes(y = 5), alpha = 0.1)+
+  geom_boxplot()+
+  theme_bw()+
+  theme(legend.position="bottom")+
+  facet_grid(Gender~affric+poa, scale = "free_x")+
+  labs(y = "relative value CD", x = "")
+```
+
+
+### VOT (medial position)
+```{r}
+final_df %>% 
+  filter(position == "medial") %>%
+  mutate(rel_cd = closdur/folVowDur,
+         rel_vot = VOT/folVowDur) %>%
+  ggplot(aes(c_type, rel_vot, fill = Language, label = stop))+
+  geom_text(aes(y = 5), alpha = 0.1)+
+  geom_boxplot()+
+  theme_bw()+
+  theme(legend.position="bottom")+
+  facet_grid(Gender~affric+poa, scale = "free_x")+
+  labs(y = "relative value VOT", x = "")
+```
+
+## Relative values in (medial position): by whole stimulus
+
+I don't have such information... I need Sven added it to the script. And idially both to the i and to the j version.
