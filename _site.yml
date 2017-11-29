@@ -14,5 +14,5 @@ navbar:
     - text: "6. pharyngealisation"
       href: 6_pharyngealisation.html
     - text: "7. gemination"
-      href: 7_gemination.html
+      href: 7_geminates.html
 output_dir: docs
