@@ -391,44 +391,50 @@ ph &lt;-<span class="st"> </span><span class="kw">read_tsv</span>(<span class="s
 <div id="cd" class="section level3">
 <h3>CD</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ph %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(word, closdur))+
+<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(word, closdur, <span class="dt">color =</span> filename))+
 <span class="st">  </span><span class="kw">geom_boxplot</span>()+
-<span class="st">  </span><span class="kw">geom_point</span>()+<span class="st">  </span>
 <span class="st">  </span><span class="kw">theme_bw</span>()+
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;CD (ms)&quot;</span>, <span class="dt">x =</span> <span class="st">&quot;&quot;</span>)+
-<span class="st">  </span><span class="kw">coord_flip</span>()</code></pre></div>
+<span class="st">  </span><span class="kw">coord_flip</span>()+
+<span class="st">  </span><span class="kw">facet_wrap</span>(~pair, <span class="dt">scale =</span> <span class="st">&quot;free_y&quot;</span>)</code></pre></div>
 <p><img src="6_pharyngealisation_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 </div>
 <div id="vot" class="section level3">
 <h3>VOT</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ph %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(word, VOT))+
+<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(word, VOT, <span class="dt">color =</span> filename))+
 <span class="st">  </span><span class="kw">geom_boxplot</span>()+
-<span class="st">  </span><span class="kw">geom_point</span>()+<span class="st">  </span>
 <span class="st">  </span><span class="kw">theme_bw</span>()+
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;VOT (ms)&quot;</span>, <span class="dt">x =</span> <span class="st">&quot;&quot;</span>)+
-<span class="st">  </span><span class="kw">coord_flip</span>()</code></pre></div>
-<p><img src="6_pharyngealisation_files/figure-html/unnamed-chunk-3-1.png" width="672" /> ## Relative values ### CD</p>
+<span class="st">  </span><span class="kw">coord_flip</span>()+
+<span class="st">  </span><span class="kw">facet_wrap</span>(~pair, <span class="dt">scale =</span> <span class="st">&quot;free_y&quot;</span>)</code></pre></div>
+<p><img src="6_pharyngealisation_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+</div>
+</div>
+<div id="relative-values" class="section level2">
+<h2>Relative values</h2>
+<div id="cd-1" class="section level3">
+<h3>CD</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ph %&gt;%<span class="st"> </span>
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">rel_cd =</span> closdur/totdur) %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(word, rel_cd))+
+<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(word, rel_cd, <span class="dt">color =</span> filename))+
 <span class="st">  </span><span class="kw">geom_boxplot</span>()+
-<span class="st">  </span><span class="kw">geom_point</span>()+<span class="st">  </span>
 <span class="st">  </span><span class="kw">theme_bw</span>()+
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;CD (ms)&quot;</span>, <span class="dt">x =</span> <span class="st">&quot;&quot;</span>)+
-<span class="st">  </span><span class="kw">coord_flip</span>()</code></pre></div>
+<span class="st">  </span><span class="kw">coord_flip</span>()+
+<span class="st">  </span><span class="kw">facet_wrap</span>(~pair, <span class="dt">scale =</span> <span class="st">&quot;free_y&quot;</span>)</code></pre></div>
 <p><img src="6_pharyngealisation_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 </div>
 <div id="vot-1" class="section level3">
 <h3>VOT</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ph %&gt;%<span class="st"> </span>
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">rel_vot =</span> VOT/totdur) %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(word, rel_vot))+
+<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(word, rel_vot, <span class="dt">color =</span> filename))+
 <span class="st">  </span><span class="kw">geom_boxplot</span>()+
-<span class="st">  </span><span class="kw">geom_point</span>()+<span class="st">  </span>
 <span class="st">  </span><span class="kw">theme_bw</span>()+
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;CD (ms)&quot;</span>, <span class="dt">x =</span> <span class="st">&quot;&quot;</span>)+
-<span class="st">  </span><span class="kw">coord_flip</span>()</code></pre></div>
+<span class="st">  </span><span class="kw">coord_flip</span>()+
+<span class="st">  </span><span class="kw">facet_wrap</span>(~pair, <span class="dt">scale =</span> <span class="st">&quot;free_y&quot;</span>)</code></pre></div>
 <p><img src="6_pharyngealisation_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 </div>
 </div>

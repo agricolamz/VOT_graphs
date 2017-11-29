@@ -135,46 +135,47 @@ ph <- read_tsv("data/pharyng.tsv")
 ### CD
 ```{r}
 ph %>% 
-  ggplot(aes(word, closdur))+
+  ggplot(aes(word, closdur, color = filename))+
   geom_boxplot()+
-  geom_point()+  
   theme_bw()+
   labs(y = "CD (ms)", x = "")+
-  coord_flip()
+  coord_flip()+
+  facet_wrap(~pair, scale = "free_y")
 ```
 
 ### VOT
 ```{r}
 ph %>% 
-  ggplot(aes(word, VOT))+
+  ggplot(aes(word, VOT, color = filename))+
   geom_boxplot()+
-  geom_point()+  
   theme_bw()+
   labs(y = "VOT (ms)", x = "")+
-  coord_flip()
+  coord_flip()+
+  facet_wrap(~pair, scale = "free_y")
 ```
+
 ## Relative values
 ### CD
 ```{r}
 ph %>% 
   mutate(rel_cd = closdur/totdur) %>% 
-  ggplot(aes(word, rel_cd))+
+  ggplot(aes(word, rel_cd, color = filename))+
   geom_boxplot()+
-  geom_point()+  
   theme_bw()+
   labs(y = "CD (ms)", x = "")+
-  coord_flip()
+  coord_flip()+
+  facet_wrap(~pair, scale = "free_y")
 ```
 
 ### VOT
 ```{r}
 ph %>% 
   mutate(rel_vot = VOT/totdur) %>% 
-  ggplot(aes(word, rel_vot))+
+  ggplot(aes(word, rel_vot, color = filename))+
   geom_boxplot()+
-  geom_point()+  
   theme_bw()+
   labs(y = "CD (ms)", x = "")+
-  coord_flip()
+  coord_flip()+
+  facet_wrap(~pair, scale = "free_y")
 ```
 
