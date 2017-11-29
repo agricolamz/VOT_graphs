@@ -31,7 +31,7 @@ results %>%
          poa = ifelse(stop == "ɡ", "velar", poa),
          aff_type = factor(aff_type, levels = c("dent", "alv", "lat", "uv")),
          affric = factor(affric, levels = c("plain", "affricate")),
-         voice = ifelse(voice == "voiced", "+v", "-v")) %>% 
+         voice = ifelse(str_detect(stop, "[bdgɡɢ]"), "+v", "-v")) %>%  
   mutate(fric = fric * 1000,
          postfric = postfric*1000,
          folVowDur = folVowDur*1000,

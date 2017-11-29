@@ -366,17 +366,17 @@ div.tocify {
 <div id="get-data" class="section level2">
 <h2>Get Data</h2>
 </div>
-<div id="absolute-values-in-medial-position-for-high-vowels" class="section level2">
-<h2>Absolute values in (medial position) for high vowels</h2>
-<div id="cd-medial-position" class="section level3">
-<h3>CD (medial position)</h3>
+<div id="absolute-values" class="section level2">
+<h2>Absolute values</h2>
+<div id="cd" class="section level3">
+<h3>CD</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">final_df %&gt;%
 <span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(c_type, closdur, <span class="dt">label =</span> stop_label))+
 <span class="st">  </span><span class="kw">geom_text</span>(<span class="kw">aes</span>(<span class="dt">y =</span> <span class="dv">430</span>), <span class="dt">alpha =</span> <span class="fl">0.1</span>)+
 <span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="kw">aes</span>(<span class="dt">color =</span> position))+
 <span class="st">  </span><span class="kw">theme_bw</span>()+
 <span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="st">&quot;bottom&quot;</span>)+
-<span class="st">  </span><span class="kw">facet_grid</span>(Gender~affric+poa, <span class="dt">scale =</span> <span class="st">&quot;free_x&quot;</span>)+
+<span class="st">  </span><span class="kw">facet_grid</span>(Language~affric+poa, <span class="dt">scale =</span> <span class="st">&quot;free_x&quot;</span>)+
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;CD (ms)&quot;</span>, <span class="dt">x =</span> <span class="st">&quot;&quot;</span>)</code></pre></div>
 <p><img src="4_position_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 </div>
@@ -388,8 +388,8 @@ div.tocify {
 <span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="kw">aes</span>(<span class="dt">color =</span> position))+
 <span class="st">  </span><span class="kw">theme_bw</span>()+
 <span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="st">&quot;bottom&quot;</span>)+
-<span class="st">  </span><span class="kw">facet_grid</span>(Gender~affric+poa, <span class="dt">scale =</span> <span class="st">&quot;free_x&quot;</span>)+
-<span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;CD (ms)&quot;</span>, <span class="dt">x =</span> <span class="st">&quot;&quot;</span>)+
+<span class="st">  </span><span class="kw">facet_grid</span>(Language~affric+poa, <span class="dt">scale =</span> <span class="st">&quot;free_x&quot;</span>)+
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;VOT (ms)&quot;</span>, <span class="dt">x =</span> <span class="st">&quot;&quot;</span>)+
 <span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="dv">30</span>, <span class="dt">lty =</span> <span class="dv">2</span>)+
 <span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="dv">160</span>, <span class="dt">lty =</span> <span class="dv">2</span>)</code></pre></div>
 <p><img src="4_position_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
@@ -402,8 +402,7 @@ div.tocify {
 <span class="st">  </span><span class="kw">stat_ellipse</span>(<span class="dt">color =</span> <span class="st">&quot;black&quot;</span>)+
 <span class="st">  </span><span class="kw">theme_bw</span>()+
 <span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="st">&quot;bottom&quot;</span>)+
-<span class="st">  </span><span class="kw">facet_grid</span>(Gender~affric+poa, <span class="dt">scale =</span> <span class="st">&quot;free_x&quot;</span>)+
-<span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;CD (ms)&quot;</span>, <span class="dt">x =</span> <span class="st">&quot;&quot;</span>)+
+<span class="st">  </span><span class="kw">facet_grid</span>(Language~affric+poa, <span class="dt">scale =</span> <span class="st">&quot;free_x&quot;</span>)+
 <span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="dv">30</span>, <span class="dt">lty =</span> <span class="dv">2</span>)+
 <span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="dv">160</span>, <span class="dt">lty =</span> <span class="dv">2</span>)+
 <span class="st">  </span><span class="kw">facet_grid</span>(Gender~affric+poa, <span class="dt">scale =</span> <span class="st">&quot;free_x&quot;</span>)+

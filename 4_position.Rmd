@@ -31,7 +31,7 @@ results %>%
          poa = ifelse(stop == "ɡ", "velar", poa),
          aff_type = factor(aff_type, levels = c("dent", "alv", "lat", "uv")),
          affric = factor(affric, levels = c("plain", "affricate")),
-         voice = ifelse(voice == "voiced", "+v", "-v")) %>% 
+         voice = ifelse(str_detect(stop, "[bdgɡɢ]"), "+v", "-v")) %>%  
   mutate(fric = fric * 1000,
          postfric = postfric*1000,
          folVowDur = folVowDur*1000,
@@ -107,8 +107,8 @@ final_df %>%
 
 ## Get Data
 
-## Absolute values in (medial position) for high vowels
-### CD (medial position)
+## Absolute values
+### CD
 ```{r}
 final_df %>%
   ggplot(aes(c_type, closdur, label = stop_label))+
@@ -116,7 +116,7 @@ final_df %>%
   geom_boxplot(aes(color = position))+
   theme_bw()+
   theme(legend.position="bottom")+
-  facet_grid(Gender~affric+poa, scale = "free_x")+
+  facet_grid(Language~affric+poa, scale = "free_x")+
   labs(y = "CD (ms)", x = "")
 ```
 
@@ -128,8 +128,8 @@ final_df %>%
   geom_boxplot(aes(color = position))+
   theme_bw()+
   theme(legend.position="bottom")+
-  facet_grid(Gender~affric+poa, scale = "free_x")+
-  labs(y = "CD (ms)", x = "")+
+  facet_grid(Language~affric+poa, scale = "free_x")+
+  labs(y = "VOT (ms)", x = "")+
   geom_hline(yintercept = 30, lty = 2)+
   geom_hline(yintercept = 160, lty = 2)
 ```
@@ -142,8 +142,7 @@ final_df %>%
   stat_ellipse(color = "black")+
   theme_bw()+
   theme(legend.position="bottom")+
-  facet_grid(Gender~affric+poa, scale = "free_x")+
-  labs(y = "CD (ms)", x = "")+
+  facet_grid(Language~affric+poa, scale = "free_x")+
   geom_hline(yintercept = 30, lty = 2)+
   geom_hline(yintercept = 160, lty = 2)+
   facet_grid(Gender~affric+poa, scale = "free_x")+

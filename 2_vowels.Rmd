@@ -7,7 +7,6 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 library(tidyverse)
 
 df <- read_tsv("data/speakers.csv")
-
 results <- read_tsv("data/results.tsv")
 correspondence <- read_tsv("data/correspondence.tsv")
 
@@ -31,7 +30,7 @@ results %>%
          poa = ifelse(stop == "ɡ", "velar", poa),
          aff_type = factor(aff_type, levels = c("dent", "alv", "lat", "uv")),
          affric = factor(affric, levels = c("plain", "affricate")),
-         voice = ifelse(voice == "voiced", "+v", "-v")) %>% 
+         voice = ifelse(str_detect(stop, "[bdgɡɢ]"), "+v", "-v")) %>%  
   mutate(fric = fric * 1000,
          postfric = postfric*1000,
          folVowDur = folVowDur*1000,
@@ -101,8 +100,7 @@ final_df %>%
 
 final_df %>% 
   mutate(stop_label = str_replace_all(final_df$stop, "[wʲʷˤχ\\(\\)\\?]", ""),
-         folVowel = str_replace_all(final_df$folVowel, "[\\(\\)]", "")) %>%
-    filter(position == "medial") ->
+         folVowel = str_replace_all(final_df$folVowel, "[\\(\\)]", "")) ->
   final_df
 ```
 
@@ -150,7 +148,7 @@ final_df %>%
                aes(c_type, closdur, color = folVowel))+
   theme_bw()+
   theme(legend.position="bottom")+
-  facet_grid(Gender~affric+poa, scale = "free_x")+
+  facet_grid(Language~affric+poa, scale = "free_x")+
   labs(y = "CD (ms)", x = "")
 ```
 
@@ -194,7 +192,7 @@ final_df %>%
   theme(legend.position="bottom")+
   geom_hline(yintercept = 30, lty = 2)+
   geom_hline(yintercept = 160, lty = 2)+
-  facet_grid(Gender~affric+poa, scale = "free_x")+
+  facet_grid(Language~affric+poa, scale = "free_x")+
   labs(y = "VOT (ms)", x = "")
 ```
 
@@ -235,6 +233,6 @@ final_df %>%
   theme(legend.position="bottom")+
   geom_hline(yintercept = 30, lty = 2)+
   geom_hline(yintercept = 160, lty = 2)+
-  facet_grid(Gender~affric+poa, scale = "free_x")+
+  facet_grid(Language~affric+poa, scale = "free_x")+
   labs(y = "VOT (ms)", x = "CD (ms)")
 ```
