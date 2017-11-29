@@ -118,7 +118,12 @@ final_df %>%
            word == "katʃal"|
            word == "ɢatʃaχ"|
            word == "ɢatʃaχar") %>% 
-  filter(position == "medial") ->
+  filter(position == "medial") %>% 
+  mutate(word = str_replace_all(word, "ɢatʃaχar", "ɢatʃaχ"),
+         word = str_replace_all(word, "katʃalaj", "katʃal"),
+         word = str_replace_all(word, "katʃaldɨ", "katʃal"),
+         word = str_replace_all(word, "mɨtʃ'aqaji", "mɨtʃ'aqa"),
+         word = str_replace_all(word, "mɨtʃ'aqai", "mɨtʃ'aqa")) ->
   gem
 ```
 
@@ -126,9 +131,9 @@ final_df %>%
 ### CD
 ```{r}
 gem %>% 
-  ggplot(aes(word, closdur))+
+  ggplot(aes(word, closdur, fill = filename))+
   geom_boxplot()+
-  geom_point()+  
+  #geom_point()+  
   theme_bw()+
   labs(y = "CD (ms)", x = "")+
   coord_flip()
@@ -137,9 +142,8 @@ gem %>%
 ### VOT
 ```{r}
 gem %>% 
-  ggplot(aes(word, VOT))+
+  ggplot(aes(word, VOT, fill = filename))+
   geom_boxplot()+
-  geom_point()+  
   theme_bw()+
   labs(y = "VOT (ms)", x = "")+
   coord_flip()
@@ -149,9 +153,8 @@ gem %>%
 ```{r}
 gem %>% 
   mutate(rel_cd = closdur/totdur) %>% 
-  ggplot(aes(word, rel_cd))+
+  ggplot(aes(word, rel_cd, fill = filename))+
   geom_boxplot()+
-  geom_point()+  
   theme_bw()+
   labs(y = "CD (ms)", x = "")+
   coord_flip()
@@ -161,9 +164,8 @@ gem %>%
 ```{r}
 gem %>% 
   mutate(rel_vot = VOT/totdur) %>% 
-  ggplot(aes(word, rel_vot))+
+  ggplot(aes(word, rel_vot, fill = filename))+
   geom_boxplot()+
-  geom_point()+  
   theme_bw()+
   labs(y = "CD (ms)", x = "")+
   coord_flip()

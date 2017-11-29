@@ -376,7 +376,12 @@ div.tocify {
 <span class="st">           </span>word ==<span class="st"> &quot;katʃal&quot;</span>|
 <span class="st">           </span>word ==<span class="st"> &quot;ɢatʃaχ&quot;</span>|
 <span class="st">           </span>word ==<span class="st"> &quot;ɢatʃaχar&quot;</span>) %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">filter</span>(position ==<span class="st"> &quot;medial&quot;</span>) -&gt;
+<span class="st">  </span><span class="kw">filter</span>(position ==<span class="st"> &quot;medial&quot;</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">word =</span> <span class="kw">str_replace_all</span>(word, <span class="st">&quot;ɢatʃaχar&quot;</span>, <span class="st">&quot;ɢatʃaχ&quot;</span>),
+         <span class="dt">word =</span> <span class="kw">str_replace_all</span>(word, <span class="st">&quot;katʃalaj&quot;</span>, <span class="st">&quot;katʃal&quot;</span>),
+         <span class="dt">word =</span> <span class="kw">str_replace_all</span>(word, <span class="st">&quot;katʃaldɨ&quot;</span>, <span class="st">&quot;katʃal&quot;</span>),
+         <span class="dt">word =</span> <span class="kw">str_replace_all</span>(word, <span class="st">&quot;mɨtʃ&#39;aqaji&quot;</span>, <span class="st">&quot;mɨtʃ&#39;aqa&quot;</span>),
+         <span class="dt">word =</span> <span class="kw">str_replace_all</span>(word, <span class="st">&quot;mɨtʃ&#39;aqai&quot;</span>, <span class="st">&quot;mɨtʃ&#39;aqa&quot;</span>)) -&gt;
 <span class="st">  </span>gem</code></pre></div>
 </div>
 <div id="absolute-values" class="section level2">
@@ -384,9 +389,9 @@ div.tocify {
 <div id="cd" class="section level3">
 <h3>CD</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">gem %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(word, closdur))+
+<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(word, closdur, <span class="dt">fill =</span> filename))+
 <span class="st">  </span><span class="kw">geom_boxplot</span>()+
-<span class="st">  </span><span class="kw">geom_point</span>()+<span class="st">  </span>
+<span class="st">  </span><span class="co">#geom_point()+  </span>
 <span class="st">  </span><span class="kw">theme_bw</span>()+
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;CD (ms)&quot;</span>, <span class="dt">x =</span> <span class="st">&quot;&quot;</span>)+
 <span class="st">  </span><span class="kw">coord_flip</span>()</code></pre></div>
@@ -395,18 +400,16 @@ div.tocify {
 <div id="vot" class="section level3">
 <h3>VOT</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">gem %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(word, VOT))+
+<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(word, VOT, <span class="dt">fill =</span> filename))+
 <span class="st">  </span><span class="kw">geom_boxplot</span>()+
-<span class="st">  </span><span class="kw">geom_point</span>()+<span class="st">  </span>
 <span class="st">  </span><span class="kw">theme_bw</span>()+
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;VOT (ms)&quot;</span>, <span class="dt">x =</span> <span class="st">&quot;&quot;</span>)+
 <span class="st">  </span><span class="kw">coord_flip</span>()</code></pre></div>
 <p><img src="7_geminates_files/figure-html/unnamed-chunk-3-1.png" width="672" /> ## Relative values ### CD</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">gem %&gt;%<span class="st"> </span>
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">rel_cd =</span> closdur/totdur) %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(word, rel_cd))+
+<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(word, rel_cd, <span class="dt">fill =</span> filename))+
 <span class="st">  </span><span class="kw">geom_boxplot</span>()+
-<span class="st">  </span><span class="kw">geom_point</span>()+<span class="st">  </span>
 <span class="st">  </span><span class="kw">theme_bw</span>()+
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;CD (ms)&quot;</span>, <span class="dt">x =</span> <span class="st">&quot;&quot;</span>)+
 <span class="st">  </span><span class="kw">coord_flip</span>()</code></pre></div>
@@ -416,9 +419,8 @@ div.tocify {
 <h3>VOT</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">gem %&gt;%<span class="st"> </span>
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">rel_vot =</span> VOT/totdur) %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(word, rel_vot))+
+<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(word, rel_vot, <span class="dt">fill =</span> filename))+
 <span class="st">  </span><span class="kw">geom_boxplot</span>()+
-<span class="st">  </span><span class="kw">geom_point</span>()+<span class="st">  </span>
 <span class="st">  </span><span class="kw">theme_bw</span>()+
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;CD (ms)&quot;</span>, <span class="dt">x =</span> <span class="st">&quot;&quot;</span>)+
 <span class="st">  </span><span class="kw">coord_flip</span>()</code></pre></div>
