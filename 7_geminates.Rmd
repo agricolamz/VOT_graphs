@@ -1,5 +1,5 @@
 ---
-title: "6. Pharyngealisation"
+title: "7. Geminates"
 ---
 
 ```{r setup, include=FALSE}
@@ -101,40 +101,31 @@ final_df %>%
 
 final_df %>% 
   mutate(stop_label = str_replace_all(final_df$stop, "[wʲʷˤχ\\(\\)\\?]", ""),
-         folVowel = str_replace_all(final_df$folVowel, "[\\(\\)]", "")) %>% 
-  filter(Language == "Rutul",
-         poa == "uvular") ->
+         folVowel = str_replace_all(final_df$folVowel, "[\\(\\)]", "")) ->
   final_df
 ```
 
 ## Selected words
 ```{r}
-# final_df %>% 
-#   filter(word == "p'aq'"| # +
-#            word == "tʃap'aˤliʃid"|
-#            word == "maqˤ'aqˤ'al"|
-#            word == "maq'am"| # +
-#            word == "χaq'as"| # +
-#            word == "baq'aq'aj"| # +
-#            word == "q'ats"| # +
-#            word == "q'ak"| 
-#            word == "q'atʃ"| # +
-#            word == "ɢapan"| # +
-#            word == "ɢapaʁ"| # +
-#            word == "ɢatar"| # +
-#            word == "maqˤaqˤ"| # +
-#            word == "gʲaɢara"| # +
-#            word == "ɢˤaraɢˤal") ->
-#   phar
-# 
-# write_tsv(phar, "data/pharyng.tsv")
-ph <- read_tsv("data/pharyng.tsv")
+final_df %>%
+  filter(word == "ɢaˤraˤɢaˤl"|
+           word == "gʲaɢara"|
+           word == "mɨtʃ'aqaji"|
+           word == "mɨtʃ'aqai"|
+           word == "mɨtʃ'aqa"|
+           word == "katʃalaj"|
+           word == "katʃaldɨ"|
+           word == "katʃal"|
+           word == "ɢatʃaχ"|
+           word == "ɢatʃaχar") %>% 
+  filter(position == "medial") ->
+  gem
 ```
 
 ## Absolute values
 ### CD
 ```{r}
-ph %>% 
+gem %>% 
   ggplot(aes(word, closdur))+
   geom_boxplot()+
   geom_point()+  
@@ -145,7 +136,7 @@ ph %>%
 
 ### VOT
 ```{r}
-ph %>% 
+gem %>% 
   ggplot(aes(word, VOT))+
   geom_boxplot()+
   geom_point()+  
@@ -156,7 +147,7 @@ ph %>%
 ## Relative values
 ### CD
 ```{r}
-ph %>% 
+gem %>% 
   mutate(rel_cd = closdur/totdur) %>% 
   ggplot(aes(word, rel_cd))+
   geom_boxplot()+
@@ -168,7 +159,7 @@ ph %>%
 
 ### VOT
 ```{r}
-ph %>% 
+gem %>% 
   mutate(rel_vot = VOT/totdur) %>% 
   ggplot(aes(word, rel_vot))+
   geom_boxplot()+

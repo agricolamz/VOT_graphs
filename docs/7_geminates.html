@@ -356,8 +356,8 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore"><ol start="6" style="list-style-type: decimal">
-<li>Pharyngealisation</li>
+<h1 class="title toc-ignore"><ol start="7" style="list-style-type: decimal">
+<li>Geminates</li>
 </ol></h1>
 
 </div>
@@ -365,51 +365,44 @@ div.tocify {
 
 <div id="selected-words" class="section level2">
 <h2>Selected words</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># final_df %&gt;% </span>
-<span class="co">#   filter(word == &quot;p&#39;aq&#39;&quot;| # +</span>
-<span class="co">#            word == &quot;tʃap&#39;aˤliʃid&quot;|</span>
-<span class="co">#            word == &quot;maqˤ&#39;aqˤ&#39;al&quot;|</span>
-<span class="co">#            word == &quot;maq&#39;am&quot;| # +</span>
-<span class="co">#            word == &quot;χaq&#39;as&quot;| # +</span>
-<span class="co">#            word == &quot;baq&#39;aq&#39;aj&quot;| # +</span>
-<span class="co">#            word == &quot;q&#39;ats&quot;| # +</span>
-<span class="co">#            word == &quot;q&#39;ak&quot;| </span>
-<span class="co">#            word == &quot;q&#39;atʃ&quot;| # +</span>
-<span class="co">#            word == &quot;ɢapan&quot;| # +</span>
-<span class="co">#            word == &quot;ɢapaʁ&quot;| # +</span>
-<span class="co">#            word == &quot;ɢatar&quot;| # +</span>
-<span class="co">#            word == &quot;maqˤaqˤ&quot;| # +</span>
-<span class="co">#            word == &quot;gʲaɢara&quot;| # +</span>
-<span class="co">#            word == &quot;ɢˤaraɢˤal&quot;) -&gt;</span>
-<span class="co">#   phar</span>
-<span class="co"># </span>
-<span class="co"># write_tsv(phar, &quot;data/pharyng.tsv&quot;)</span>
-ph &lt;-<span class="st"> </span><span class="kw">read_tsv</span>(<span class="st">&quot;data/pharyng.tsv&quot;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">final_df %&gt;%
+<span class="st">  </span><span class="kw">filter</span>(word ==<span class="st"> &quot;ɢaˤraˤɢaˤl&quot;</span>|
+<span class="st">           </span>word ==<span class="st"> &quot;gʲaɢara&quot;</span>|
+<span class="st">           </span>word ==<span class="st"> &quot;mɨtʃ&#39;aqaji&quot;</span>|
+<span class="st">           </span>word ==<span class="st"> &quot;mɨtʃ&#39;aqai&quot;</span>|
+<span class="st">           </span>word ==<span class="st"> &quot;mɨtʃ&#39;aqa&quot;</span>|
+<span class="st">           </span>word ==<span class="st"> &quot;katʃalaj&quot;</span>|
+<span class="st">           </span>word ==<span class="st"> &quot;katʃaldɨ&quot;</span>|
+<span class="st">           </span>word ==<span class="st"> &quot;katʃal&quot;</span>|
+<span class="st">           </span>word ==<span class="st"> &quot;ɢatʃaχ&quot;</span>|
+<span class="st">           </span>word ==<span class="st"> &quot;ɢatʃaχar&quot;</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(position ==<span class="st"> &quot;medial&quot;</span>) -&gt;
+<span class="st">  </span>gem</code></pre></div>
 </div>
 <div id="absolute-values" class="section level2">
 <h2>Absolute values</h2>
 <div id="cd" class="section level3">
 <h3>CD</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ph %&gt;%<span class="st"> </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">gem %&gt;%<span class="st"> </span>
 <span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(word, closdur))+
 <span class="st">  </span><span class="kw">geom_boxplot</span>()+
 <span class="st">  </span><span class="kw">geom_point</span>()+<span class="st">  </span>
 <span class="st">  </span><span class="kw">theme_bw</span>()+
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;CD (ms)&quot;</span>, <span class="dt">x =</span> <span class="st">&quot;&quot;</span>)+
 <span class="st">  </span><span class="kw">coord_flip</span>()</code></pre></div>
-<p><img src="6_pharyngealisation_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><img src="7_geminates_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 </div>
 <div id="vot" class="section level3">
 <h3>VOT</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ph %&gt;%<span class="st"> </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">gem %&gt;%<span class="st"> </span>
 <span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(word, VOT))+
 <span class="st">  </span><span class="kw">geom_boxplot</span>()+
 <span class="st">  </span><span class="kw">geom_point</span>()+<span class="st">  </span>
 <span class="st">  </span><span class="kw">theme_bw</span>()+
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;VOT (ms)&quot;</span>, <span class="dt">x =</span> <span class="st">&quot;&quot;</span>)+
 <span class="st">  </span><span class="kw">coord_flip</span>()</code></pre></div>
-<p><img src="6_pharyngealisation_files/figure-html/unnamed-chunk-3-1.png" width="672" /> ## Relative values ### CD</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ph %&gt;%<span class="st"> </span>
+<p><img src="7_geminates_files/figure-html/unnamed-chunk-3-1.png" width="672" /> ## Relative values ### CD</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">gem %&gt;%<span class="st"> </span>
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">rel_cd =</span> closdur/totdur) %&gt;%<span class="st"> </span>
 <span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(word, rel_cd))+
 <span class="st">  </span><span class="kw">geom_boxplot</span>()+
@@ -417,11 +410,11 @@ ph &lt;-<span class="st"> </span><span class="kw">read_tsv</span>(<span class="s
 <span class="st">  </span><span class="kw">theme_bw</span>()+
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;CD (ms)&quot;</span>, <span class="dt">x =</span> <span class="st">&quot;&quot;</span>)+
 <span class="st">  </span><span class="kw">coord_flip</span>()</code></pre></div>
-<p><img src="6_pharyngealisation_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><img src="7_geminates_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 </div>
 <div id="vot-1" class="section level3">
 <h3>VOT</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ph %&gt;%<span class="st"> </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">gem %&gt;%<span class="st"> </span>
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">rel_vot =</span> VOT/totdur) %&gt;%<span class="st"> </span>
 <span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(word, rel_vot))+
 <span class="st">  </span><span class="kw">geom_boxplot</span>()+
@@ -429,7 +422,7 @@ ph &lt;-<span class="st"> </span><span class="kw">read_tsv</span>(<span class="s
 <span class="st">  </span><span class="kw">theme_bw</span>()+
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;CD (ms)&quot;</span>, <span class="dt">x =</span> <span class="st">&quot;&quot;</span>)+
 <span class="st">  </span><span class="kw">coord_flip</span>()</code></pre></div>
-<p><img src="6_pharyngealisation_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="7_geminates_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 </div>
 </div>
 
